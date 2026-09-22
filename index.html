@@ -3,68 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micro MTT 8-Max Pro Assistant</title>
+    <title>Micro MTT 8-Max Matrix Assistant</title>
     <style>
         :root {
-            --bg-color: #121418;
-            --card-bg: #1e222a;
-            --box-bg: #15181e;
+            --bg-color: #0f1115;
+            --card-bg: #181b22;
+            --cell-bg: #212631;
+            --cell-fold: #1b1f27;
+            --cell-fold-text: #4a5568;
             --accent-green: #00e676;
             --accent-gold: #ffd700;
             --accent-blue: #29b6f6;
             --accent-red: #ff5252;
             --accent-orange: #ff9100;
-            --accent-purple: #b388ff;
-            --text-color: #e0e6ed;
-            --text-dim: #90a4ae;
-            --border-color: #2c323f;
+            --text-color: #e2e8f0;
+            --border-color: #2d3748;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 15px;
+            padding: 12px;
             box-sizing: border-box;
         }
 
         .container {
-            max-width: 820px;
+            max-width: 780px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         h1 {
             color: var(--accent-gold);
-            font-size: 1.5rem;
-            margin: 0 0 5px 0;
+            font-size: 1.35rem;
+            margin: 0 0 4px 0;
         }
 
         .subtitle {
-            color: var(--text-dim);
-            font-size: 0.85rem;
+            color: #94a3b8;
+            font-size: 0.8rem;
         }
 
         .section-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             color: var(--accent-blue);
-            margin: 14px 0 6px 0;
+            margin: 10px 0 6px 0;
             font-weight: 600;
         }
 
         .btn-group {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 10px;
         }
 
@@ -76,7 +76,7 @@
             grid-template-columns: repeat(4, 1fr);
         }
 
-        @media (min-width: 550px) {
+        @media (min-width: 520px) {
             .btn-group-pos {
                 grid-template-columns: repeat(8, 1fr);
             }
@@ -86,13 +86,12 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            padding: 10px 4px;
+            padding: 8px 4px;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
+            transition: all 0.15s ease;
         }
 
         button.opt-btn:hover {
@@ -103,33 +102,41 @@
             background-color: var(--accent-blue);
             color: #000;
             border-color: var(--accent-blue);
-            box-shadow: 0 0 10px rgba(41, 182, 246, 0.4);
+            box-shadow: 0 0 8px rgba(41, 182, 246, 0.4);
         }
 
-        /* Nút kịch bản active riêng */
         button.opt-btn.scenario-btn.active {
             background-color: var(--accent-gold);
             color: #000;
             border-color: var(--accent-gold);
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
         }
 
-        .display-card {
+        /* KHUNG CHỨA MA TRẬN 13x13 */
+        .matrix-wrapper {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 18px;
-            margin-top: 15px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+            padding: 12px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .matrix-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .mode-badge {
             display: inline-block;
-            padding: 4px 10px;
+            padding: 4px 8px;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 12px;
+            font-size: 0.75rem;
             text-transform: uppercase;
         }
 
@@ -138,85 +145,110 @@
         .badge-main { background-color: var(--accent-green); color: #000; }
         .badge-deep { background-color: var(--accent-blue); color: #000; }
 
-        .range-block {
-            background-color: var(--box-bg);
+        /* CHÚ THÍCH MÀU (LEGEND) */
+        .legend-bar {
+            display: flex;
+            gap: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: #11141a;
+            padding: 6px 10px;
             border-radius: 6px;
-            padding: 10px 14px;
-            margin: 8px 0 12px 0;
-            border-left: 4px solid var(--border-color);
+            align-items: center;
         }
 
-        .range-block.gold { border-left-color: var(--accent-gold); }
-        .range-block.green { border-left-color: var(--accent-green); }
-        .range-block.red { border-left-color: var(--accent-red); }
-        .range-block.orange { border-left-color: var(--accent-orange); }
-
-        .range-title {
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 4px;
+        .legend-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
-        .range-content {
-            font-family: Consolas, monospace;
-            font-size: 0.95rem;
-            color: #fff;
-            line-height: 1.4;
-            word-break: break-word;
+        .legend-box {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
         }
 
-        .info-row {
-            margin: 8px 0;
-            font-size: 0.88rem;
-            line-height: 1.5;
+        .poker-grid {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 2px;
+            width: 100%;
+            max-width: 580px;
+            margin: 0 auto;
+            aspect-ratio: 1 / 1;
         }
 
-        .info-label {
-            font-weight: bold;
-            color: var(--accent-gold);
+        .poker-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(8px, 1.6vw, 11px);
+            font-weight: 700;
+            border-radius: 3px;
+            user-select: none;
+            transition: transform 0.1s;
         }
+
+        .poker-cell:hover {
+            transform: scale(1.15);
+            z-index: 10;
+            box-shadow: 0 0 6px rgba(255,255,255,0.8);
+        }
+
+        /* MÀU SẮC ACTION TRÊN MA TRẬN */
+        .cell-raise { background-color: #ff5252; color: #fff; }
+        .cell-3bet  { background-color: #ff9100; color: #000; }
+        .cell-call  { background-color: #00e676; color: #000; }
+        .cell-fold  { background-color: var(--cell-fold); color: var(--cell-fold-text); border: 1px solid rgba(255,255,255,0.03); }
+
+        /* PHẦN GHI CHÚ BÊN DƯỚI */
+        .info-panel {
+            margin-top: 12px;
+            background: #12151b;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        .info-panel b { color: var(--accent-gold); }
 
         /* Notes đối thủ */
         .notes-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             margin-top: 15px;
         }
 
         @media (max-width: 500px) {
-            .notes-grid {
-                grid-template-columns: 1fr;
-            }
+            .notes-grid { grid-template-columns: 1fr; }
         }
 
         .note-card {
-            padding: 10px;
+            padding: 8px 10px;
             border-radius: 6px;
-            font-size: 0.8rem;
-            line-height: 1.4;
+            font-size: 0.78rem;
+            line-height: 1.35;
         }
 
         .note-green { background-color: #1b382b; border: 1px solid var(--accent-green); }
         .note-blue { background-color: #173242; border: 1px solid var(--accent-blue); }
         .note-red { background-color: #3d1c1c; border: 1px solid var(--accent-red); }
         .note-yellow { background-color: #3d351c; border: 1px solid var(--accent-gold); }
-        .note-title { font-weight: bold; margin-bottom: 4px; display: block; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>♠️ MICRO MTT 8-MAX PRO ASSISTANT</h1>
-        <div class="subtitle">Ma Trận Open • Đối Mặt Raise (3-Bet / Call) • Đối Mặt 3-Bet</div>
+        <h1>♠️ MICRO MTT 8-MAX MATRIX ASSISTANT</h1>
+        <div class="subtitle">Ma Trận Trực Quan 13x13 Học Hình Dáng Range (GTO / Exploit Style)</div>
     </header>
 
-    <!-- 1. CHỌN STACK DEPTH -->
+    <!-- 1. CHỌN STACK -->
     <div class="section-title">1. Độ Sâu Stack (Big Blinds)</div>
     <div class="btn-group">
         <button class="opt-btn active" onclick="setStack('<12', this)">&lt; 12 BB</button>
@@ -225,15 +257,15 @@
         <button class="opt-btn" onclick="setStack('>50', this)">&gt; 50 BB</button>
     </div>
 
-    <!-- 2. CHỌN TÌNH HUỐNG (SCENARIO) -->
-    <div class="section-title">2. Tình Huống Trước Mặt Bạn</div>
+    <!-- 2. CHỌN TÌNH HUỐNG -->
+    <div class="section-title">2. Tình Huống Preflop</div>
     <div class="btn-group btn-group-scenarios">
         <button class="opt-btn scenario-btn active" onclick="setScenario('OPEN', this)">🟢 Open (RFI)</button>
         <button class="opt-btn scenario-btn" onclick="setScenario('VS_OPEN', this)">🟠 Vs Open Raise</button>
         <button class="opt-btn scenario-btn" onclick="setScenario('VS_3BET', this)">🔴 Vs Bị 3-Bet</button>
     </div>
 
-    <!-- 3. CHỌN VỊ TRÍ 8-MAX -->
+    <!-- 3. CHỌN VỊ TRÍ CỦA BẠN -->
     <div class="section-title">3. Vị Trí Của Bạn (Hero Position)</div>
     <div class="btn-group btn-group-pos">
         <button class="opt-btn active" onclick="setPos('UTG', this)">UTG</button>
@@ -246,230 +278,282 @@
         <button class="opt-btn" onclick="setPos('BB', this)">BB</button>
     </div>
 
-    <!-- 4. HIỂN THỊ KẾT QUẢ CHI TIẾT -->
-    <div class="display-card" id="outputCard">
-        <!-- Render bằng Javascript -->
+    <!-- 4. MA TRẬN TRỰC QUAN 13x13 -->
+    <div class="matrix-wrapper">
+        <div class="matrix-header">
+            <span id="modeBadge" class="mode-badge badge-push">PUSH / FOLD</span>
+            <span id="posStackInfo" style="font-weight: bold; color: var(--accent-gold); font-size: 0.9rem;">UTG | &lt; 12 BB</span>
+        </div>
+
+        <!-- BẢNG MÀU CHÚ THÍCH -->
+        <div class="legend-bar" id="legendBar">
+            <!-- Dynamic Legend -->
+        </div>
+
+        <!-- LƯỚI MA TRẬN 13x13 -->
+        <div class="poker-grid" id="pokerGrid"></div>
+
+        <!-- THÔNG TIN CHI TIẾT & SIZING -->
+        <div class="info-panel" id="infoPanel"></div>
     </div>
 
-    <!-- 5. GHI CHÚ EXPLOIT ĐỐI THỦ -->
+    <!-- 5. NOTE EXPLOIT MÀU ĐỐI THỦ -->
     <div class="section-title">4. Nhắc Nhở Exploit Màu Đối Thủ Micro</div>
     <div class="notes-grid">
         <div class="note-card note-green">
-            <span class="note-title" style="color: var(--accent-green);">🟢 CALLING STATION</span>
-            • Value Bet to (66-80% Pot)<br>
-            • KHÔNG Bluff ở River<br>
-            • KHÔNG Slowplay bài Nut
+            <b style="color: var(--accent-green);">🟢 CALLING STATION:</b> Value Bet to (66-80%), KHÔNG Bluff River, KHÔNG Slowplay bài nut.
         </div>
         <div class="note-card note-blue">
-            <span class="note-title" style="color: var(--accent-blue);">🔵 NIT / SỢ CHẾT</span>
-            • Steal Blind liên tục<br>
-            • C-bet size nhỏ (25-33% Pot)<br>
-            • Fold ngay khi họ 3-bet hoặc Raise
+            <b style="color: var(--accent-blue);">🔵 NIT / SỢ CHẾT:</b> Steal Blind liên tục, C-bet nhỏ (25-33%), Fold ngay khi họ 3-bet/Raise.
         </div>
         <div class="note-card note-red">
-            <span class="note-title" style="color: var(--accent-red);">🔴 MANIAC (NGÁO BÀO)</span>
-            • Check để bẫy (Induce Bluff)<br>
-            • Call rộng hơn với Top/Middle Pair<br>
-            • Đừng Bluff lại họ
+            <b style="color: var(--accent-red);">🔴 MANIAC:</b> Check để bẫy (Induce Bluff), Call rộng hơn với Top/Middle Pair, không Bluff lại họ.
         </div>
         <div class="note-card note-yellow">
-            <span class="note-title" style="color: var(--accent-gold);">🟡 REGULAR</span>
-            • Đánh chuẩn Blueprint<br>
-            • Tận dụng vị trí IP sau Flop<br>
-            • Tránh sa lầy Pot to khi OOP
+            <b style="color: var(--accent-gold);">🟡 REGULAR:</b> Đánh đúng Blueprint, tận dụng vị trí IP sau flop, tránh pot to khi OOP.
         </div>
     </div>
 </div>
 
 <script>
+    const RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
+    
+    // TẠO MA TRẬN 13x13 ĐẦY ĐỦ 169 COMBOS
+    const MATRIX_HANDS = [];
+    for (let r = 0; r < 13; r++) {
+        MATRIX_HANDS[r] = [];
+        for (let c = 0; c < 13; c++) {
+            if (r === c) {
+                MATRIX_HANDS[r][c] = RANKS[r] + RANKS[c]; // Đôi (AA, KK, ...)
+            } else if (r < c) {
+                MATRIX_HANDS[r][c] = RANKS[r] + RANKS[c] + 's'; // Suited (AKs, A5s, ...)
+            } else {
+                MATRIX_HANDS[r][c] = RANKS[c] + RANKS[r] + 'o'; // Offsuit (AKo, KJo, ...)
+            }
+        }
+    }
+
     let currentStack = '<12';
     let currentScenario = 'OPEN';
     let currentPos = 'UTG';
 
-    // DỮ LIỆU TOÀN DIỆN CHIẾN THUẬT
+    // BỘ PHÂN TÍCH CHUYỂN DẢI RANGE THÀNH SET BÀI
+    function expandRange(pattern) {
+        const set = new Set();
+        if (!pattern || pattern.includes('---')) return set;
+
+        const parts = pattern.split(',').map(s => s.trim());
+        const rankIdx = (ch) => RANKS.indexOf(ch);
+
+        parts.forEach(p => {
+            if (p === 'Mọi Ax') {
+                for (let i = 1; i < 13; i++) {
+                    set.add('A' + RANKS[i] + 's');
+                    set.add('A' + RANKS[i] + 'o');
+                }
+            } else if (p === 'Mọi Kx') {
+                for (let i = 2; i < 13; i++) {
+                    set.add('K' + RANKS[i] + 's');
+                    set.add('K' + RANKS[i] + 'o');
+                }
+            } else if (p === 'Mọi Suited') {
+                for (let r = 0; r < 13; r++) {
+                    for (let c = r + 1; c < 13; c++) set.add(RANKS[r] + RANKS[c] + 's');
+                }
+            } else if (p === 'Suited Connectors') {
+                ['AKs','KQs','QJs','JTs','T9s','98s','87s','76s','65s','54s'].forEach(h => set.add(h));
+            } else if (p.endsWith('+')) {
+                const base = p.slice(0, -1);
+                if (base.length === 2 && base[0] === base[1]) {
+                    // Pocket pair: 88+ -> 88, 99, TT, JJ, QQ, KK, AA
+                    const idx = rankIdx(base[0]);
+                    for (let i = idx; i >= 0; i--) set.add(RANKS[i] + RANKS[i]);
+                } else if (base.endsWith('s')) {
+                    const r1 = rankIdx(base[0]), r2 = rankIdx(base[1]);
+                    for (let i = r2; i > r1; i--) set.add(base[0] + RANKS[i] + 's');
+                } else if (base.endsWith('o')) {
+                    const r1 = rankIdx(base[0]), r2 = rankIdx(base[1]);
+                    for (let i = r2; i > r1; i--) set.add(base[0] + RANKS[i] + 'o');
+                }
+            } else if (p.includes('-')) {
+                const [start, end] = p.split('-');
+                if (start.endsWith('s') && end.endsWith('s')) {
+                    const r1 = rankIdx(start[0]), s2 = rankIdx(start[1]), e2 = rankIdx(end[1]);
+                    const min = Math.min(s2, e2), max = Math.max(s2, e2);
+                    for (let i = min; i <= max; i++) set.add(start[0] + RANKS[i] + 's');
+                } else if (start.length === 2 && start[0] === start[1]) {
+                    const s = rankIdx(start[0]), e = rankIdx(end[0]);
+                    const min = Math.min(s, e), max = Math.max(s, e);
+                    for (let i = min; i <= max; i++) set.add(RANKS[i] + RANKS[i]);
+                }
+            } else {
+                set.add(p);
+            }
+        });
+        return set;
+    }
+
+    // DỮ LIỆU TỪNG TÌNH HUỐNG
     const DB = {
-        // ==========================================
-        // 1. CHƯA CÓ AI RAISE - OPEN POT
-        // ==========================================
         'OPEN': {
             '<12': {
-                mode: 'PUSH / FOLD THUẦN TÚY (<12 BB)',
-                badgeClass: 'badge-push',
+                mode: 'PUSH / FOLD (<12 BB)', badgeClass: 'badge-push',
                 data: {
-                    UTG: { range1: '88+, AJs+, AQo+', sizing: 'Shove All-in (100% Stack)', notes: 'Range hẹp (Top 8-10%). Tuyệt đối không Min-raise/Fold.' },
-                    UTG1: { range1: '77+, AJs+, AQo+', sizing: 'Shove All-in', notes: 'Range hẹp. Chỉ đẩy All-in các bài mạnh.' },
-                    MP: { range1: '22+, A8s+, A10o+, KJs+, KQo', sizing: 'Shove All-in', notes: 'Top 15-18%. Tận dụng Ax có blocker.' },
-                    HJ: { range1: '22+, A5s+, A9o+, K9s+, KJo+, QJs', sizing: 'Shove All-in', notes: 'Mở rộng range do còn ít đối thủ đằng sau.' },
-                    CO: { range1: '22+, A2s+, A7o+, K9s+, KJo+, Q9s+, J9s+, T9s', sizing: 'Shove All-in', notes: 'Range ~28%. Tấn công áp lực lên BTN và 2 Blinds.' },
-                    BTN: { range1: '22+, Mọi Ax, K5s+, K8o+, Q8s+, QTo+, J8s+, T8s+, 98s', sizing: 'Shove All-in', notes: 'Range ~45%. Shove hầu hết bài có lá cao hoặc Suited.' },
-                    SB: { range1: '22+, Mọi Ax, Mọi Kx, Mọi Suited, Q6o+, J7o+', sizing: 'Shove All-in', notes: 'Range ~60% cướp mù khẩn cấp vs BB.' },
-                    BB: { range1: 'Chỉ đối mặt Action (Xem tab Vs Open / Vs 3-Bet)', sizing: '---', notes: 'Vị trí BB luôn đi sau preflop.' }
+                    UTG:  { r1: '88+, AJs+, AQo+', size: 'Shove All-in (100% Stack)', notes: 'Range hẹp (Top 8-10%). Tuyệt đối không Min-raise/Fold.' },
+                    UTG1: { r1: '77+, AJs+, AQo+', size: 'Shove All-in', notes: 'Range hẹp, chỉ đẩy all-in các bài mạnh.' },
+                    MP:   { r1: '22+, A8s+, ATo+, KJs+, KQo', size: 'Shove All-in', notes: 'Top 16%. Ax đóng vai trò blocker tốt.' },
+                    HJ:   { r1: '22+, A5s+, A9o+, K9s+, KJo+, QJs', size: 'Shove All-in', notes: 'Mở rộng dần khi có ít người phía sau.' },
+                    CO:   { r1: '22+, A2s+, A7o+, K9s+, KJo+, Q9s+, J9s+, T9s', size: 'Shove All-in', notes: 'Range ~28%. Tấn công áp lực lên BTN và 2 Blinds.' },
+                    BTN:  { r1: '22+, Mọi Ax, K5s+, K8o+, Q8s+, QTo+, J8s+, T8s+, 98s', size: 'Shove All-in', notes: 'Range ~45%. Shove hầu hết bài có lá cao hoặc Suited.' },
+                    SB:   { r1: '22+, Mọi Ax, Mọi Kx, Mọi Suited, Q6o+, J7o+', size: 'Shove All-in', notes: 'Range ~60% cướp mù khẩn cấp vs BB.' },
+                    BB:   { r1: '', size: '---', notes: 'BB không Open (Xem tab Vs Open / Vs 3-Bet).' }
                 }
             },
             '12-25': {
-                mode: 'RESTEAL & CƯỚP BLIND (12-25 BB)',
-                badgeClass: 'badge-resteal',
+                mode: 'RESTEAL & CƯỚP BLIND (12-25 BB)', badgeClass: 'badge-resteal',
                 data: {
-                    UTG: { range1: '77+, ATs+, AJo+, KQs', sizing: 'Min-raise 2.0x', notes: 'Open 12-15%. Bị 3-Bet Shove -> Chỉ Call TT+, AK.' },
-                    UTG1: { range1: '77+, ATs+, AJo+, KQs', sizing: 'Min-raise 2.0x', notes: 'Chơi chắc chắn ở vị trí đầu bàn.' },
-                    MP: { range1: '55+, A8s+, ATo+, KTs+, QJs, JTs', sizing: 'Min-raise 2.0x', notes: 'Open ~18%. Fold phần lớn nếu bị 3-bet từ Late Position.' },
-                    HJ: { range1: '22+, A5s+, A9o+, K9s+, KJo+, QJs', sizing: 'Min-raise 2.0x', notes: 'Bắt đầu nâng tần suất cướp blind.' },
-                    CO: { range1: '22+, A2s+, A8o+, K8s+, Q9s+, Suited Connectors', sizing: 'Min-raise 2.0x', notes: 'Open ~28%. Chuẩn bị đối mặt 3-bet resteal từ Blinds.' },
-                    BTN: { range1: '22+, A2s+, A5o+, K5s+, K9o+, Q8s+, Connectors', sizing: 'Min-raise 2.0x', notes: 'Open 40-45%. Chỉ Call 3-bet shove với 99+, AQ+.' },
-                    SB: { range1: '22+, Mọi Ax, K8s+, Q9s+, J9s+, A8o+', sizing: 'Min-raise 2.2x hoặc Shove', notes: 'Open rộng vs BB, cẩn thận nếu BB thích 3-Bet shove.' },
-                    BB: { range1: 'Chỉ đối mặt Action', sizing: '---', notes: 'Xem tab Vs Open Raise.' }
+                    UTG:  { r1: '77+, ATs+, AJo+, KQs', size: 'Min-raise 2.0x', notes: 'Open 12-15%. Bị 3-Bet Shove -> Chỉ Call TT+, AK.' },
+                    UTG1: { r1: '77+, ATs+, AJo+, KQs', size: 'Min-raise 2.0x', notes: 'Chơi chắc chắn ở vị trí đầu bàn.' },
+                    MP:   { r1: '55+, A8s+, ATo+, KTs+, QJs, JTs', size: 'Min-raise 2.0x', notes: 'Open ~18%. Fold phần lớn nếu bị 3-bet từ Late Position.' },
+                    HJ:   { r1: '22+, A5s+, A9o+, K9s+, KJo+, QJs', size: 'Min-raise 2.0x', notes: 'Bắt đầu nâng tần suất cướp blind.' },
+                    CO:   { r1: '22+, A2s+, A8o+, K8s+, Q9s+, Suited Connectors', size: 'Min-raise 2.0x', notes: 'Open ~28%. Chuẩn bị đối mặt 3-bet resteal từ Blinds.' },
+                    BTN:  { r1: '22+, A2s+, A5o+, K5s+, K9o+, Q8s+, Suited Connectors', size: 'Min-raise 2.0x', notes: 'Open 40-45%. Chỉ Call 3-bet shove với 99+, AQ+.' },
+                    SB:   { r1: '22+, Mọi Ax, K8s+, Q9s+, J9s+, A8o+', size: 'Min-raise 2.2x hoặc Shove', notes: 'Open rộng vs BB, cẩn thận nếu BB thích 3-Bet shove.' },
+                    BB:   { r1: '', size: '---', notes: 'Xem tab Vs Open Raise.' }
                 }
             },
             '25-50': {
-                mode: 'MAIN GAME STANDARD (25-50 BB)',
-                badgeClass: 'badge-main',
+                mode: 'MAIN GAME STANDARD (25-50 BB)', badgeClass: 'badge-main',
                 data: {
-                    UTG: { range1: '22+, A9s+, AJo+, KTs+, QTs+, JTs, 98s', sizing: 'Open 2.1x', notes: 'C-bet 25-33% pot ở flop khô (K-8-3). Check-fold khi hụt ở flop ướt.' },
-                    UTG1: { range1: '22+, A9s+, AJo+, KTs+, QTs+, JTs', sizing: 'Open 2.1x', notes: 'Đánh chắc chắn, tránh pot to khi OOP.' },
-                    MP: { range1: '22+, A8s+, ATo+, K9s+, QTs+, JTs, 87s', sizing: 'Open 2.1x', notes: 'Giữ range cân bằng giữa value và bài tiềm năng.' },
-                    HJ: { range1: '22+, A5s+, A9o+, K8s+, Q9s+, J9s+, 76s+', sizing: 'Open 2.1x', notes: 'Mở rộng dần khi chuẩn bị đến vị trí muộn.' },
-                    CO: { range1: '22+, A2s+, A7o+, K5s+, K9o+, Q8s+, Suited Connectors', sizing: 'Open 2.1x', notes: 'Tấn công Blinds. Bet Value 50-66% khi dính Top Pair+.' },
-                    BTN: { range1: '22+, Mọi Ax, mọi Suited, Broadway, Connectors tới 54s', sizing: 'Open 2.1x - 2.2x', notes: 'Tận dụng tuyệt đối lợi thế In Position (IP).' },
-                    SB: { range1: '22+, A2s+, A8o+, K8s+, Q9s+', sizing: 'Open 2.5x vs BB', notes: 'Nếu BB là Nit -> Auto raise cướp. Nếu BB Station -> Chờ bài to.' },
-                    BB: { range1: 'Chỉ đối mặt Action', sizing: '---', notes: 'Xem tab Vs Open Raise.' }
+                    UTG:  { r1: '22+, A9s+, AJo+, KTs+, QTs+, JTs, 98s', size: 'Open 2.1x', notes: 'C-bet 25-33% pot ở flop khô (K-8-3). Check-fold khi hụt ở flop ướt.' },
+                    UTG1: { r1: '22+, A9s+, AJo+, KTs+, QTs+, JTs', size: 'Open 2.1x', notes: 'Đánh chắc chắn, tránh pot to khi OOP.' },
+                    MP:   { r1: '22+, A8s+, ATo+, K9s+, QTs+, JTs, 87s', size: 'Open 2.1x', notes: 'Giữ range cân bằng giữa value và bài tiềm năng.' },
+                    HJ:   { r1: '22+, A5s+, A9o+, K8s+, Q9s+, J9s+, 76s+', size: 'Open 2.1x', notes: 'Mở rộng dần khi chuẩn bị đến vị trí muộn.' },
+                    CO:   { r1: '22+, A2s+, A7o+, K5s+, K9o+, Q8s+, Suited Connectors', size: 'Open 2.1x', notes: 'Tấn công Blinds. Bet Value 50-66% khi dính Top Pair+.' },
+                    BTN:  { r1: '22+, Mọi Ax, mọi Suited, Broadway, Connectors tới 54s', size: 'Open 2.1x - 2.2x', notes: 'Tận dụng tuyệt đối lợi thế In Position (IP).' },
+                    SB:   { r1: '22+, A2s+, A8o+, K8s+, Q9s+', size: 'Open 2.5x vs BB', notes: 'Nếu BB là Nit -> Auto raise cướp. Nếu BB Station -> Chờ bài to.' },
+                    BB:   { r1: '', size: '---', notes: 'Xem tab Vs Open Raise.' }
                 }
             },
             '>50': {
-                mode: 'DEEP STACK (IMPLIED ODDS & VALUE) (>50 BB)',
-                badgeClass: 'badge-deep',
+                mode: 'DEEP STACK (IMPLIED ODDS) (>50 BB)', badgeClass: 'badge-deep',
                 data: {
-                    UTG: { range1: '22+, A2s+, AJo+, KTs+, QTs+, Connectors 76s+', sizing: 'Open 2.2x - 2.5x', notes: 'Set-mining cực giá trị. Trúng Set là nhắm ăn trọn Stack đối thủ.' },
-                    UTG1: { range1: '22+, A2s+, AJo+, KTs+, QTs+', sizing: 'Open 2.2x', notes: 'Ưu tiên các bài có khả năng tạo Nut.' },
-                    MP: { range1: '22+, Mọi Suited Ax, K9s+, Q9s+, Suited Connectors', sizing: 'Open 2.2x', notes: 'Đánh chắc Preflop, build pot to Postflop khi hit mạnh.' },
-                    HJ: { range1: '22+, Mọi Suited Ax, K8s+, Suited Connectors, Broadway', sizing: 'Open 2.2x', notes: 'Tận dụng Implied Odds từ Suited Connectors.' },
-                    CO: { range1: 'Mọi Pocket Pair, Suited Connectors, Suited Gappers (~35%)', sizing: 'Open 2.2x - 2.5x', notes: 'Bet to (66-80% Pot) cả 3 vòng khi cầm Set/Two Pair/Straight/Flush.' },
-                    BTN: { range1: 'Range cực rộng (~50%). Mọi bài có tính kết nối', sizing: 'Open 2.5x', notes: 'KHÔNG SLOWPLAY ở Micro khi dính bài mạnh!' },
-                    SB: { range1: 'Range chắc chắn, hạn chế build pot to khi OOP', sizing: 'Open 2.5x - 3.0x', notes: 'Chỉ chơi bài mạnh vì sẽ phải đánh OOP cả ván.' },
-                    BB: { range1: 'Chỉ đối mặt Action', sizing: '---', notes: 'Xem tab Vs Open Raise.' }
+                    UTG:  { r1: '22+, A2s+, AJo+, KTs+, QTs+, Connectors 76s+', size: 'Open 2.2x - 2.5x', notes: 'Set-mining cực giá trị. Trúng Set là nhắm ăn trọn Stack đối thủ.' },
+                    UTG1: { r1: '22+, A2s+, AJo+, KTs+, QTs+', size: 'Open 2.2x', notes: 'Ưu tiên các bài có khả năng tạo Nut.' },
+                    MP:   { r1: '22+, Mọi Ax, K9s+, Q9s+, Suited Connectors', size: 'Open 2.2x', notes: 'Đánh chắc Preflop, build pot to Postflop khi hit mạnh.' },
+                    HJ:   { r1: '22+, Mọi Ax, K8s+, Suited Connectors, Broadway', size: 'Open 2.2x', notes: 'Tận dụng Implied Odds từ Suited Connectors.' },
+                    CO:   { r1: '22+, Mọi Suited, Suited Connectors, A7o+, K9o+', size: 'Open 2.2x - 2.5x', notes: 'Bet to (66-80% Pot) cả 3 vòng khi cầm Set/Two Pair/Straight/Flush.' },
+                    BTN:  { r1: '22+, Mọi Ax, Mọi Suited, Mọi Kx, Connectors 54s+', size: 'Open 2.5x', notes: 'KHÔNG SLOWPLAY ở Micro khi dính bài mạnh!' },
+                    SB:   { r1: '22+, A2s+, A8o+, K8s+, Q9s+', size: 'Open 2.5x - 3.0x', notes: 'Chỉ chơi bài mạnh vì sẽ phải đánh OOP cả ván.' },
+                    BB:   { r1: '', size: '---', notes: 'Xem tab Vs Open Raise.' }
                 }
             }
         },
-
-        // ==========================================
-        // 2. ĐỐI MẶT OPEN RAISE (CALL HOẶC 3-BET)
-        // ==========================================
         'VS_OPEN': {
             '<12': {
-                mode: 'VS OPEN KHI SHORT STACK (<12 BB)',
-                badgeClass: 'badge-push',
+                mode: 'VS OPEN KHI SHORT STACK (<12 BB)', badgeClass: 'badge-push',
                 data: {
-                    UTG: { range1: '--- (Không ai open trước UTG)', sizing: '---', notes: 'UTG luôn là người hành động đầu tiên.' },
-                    UTG1: { range1: 'JJ+, AK (Shove All-in)', range2: 'Fold hết còn lại', sizing: 'Shove All-in', notes: 'Đối mặt UTG open: Chỉ Shove bài Premium, tuyệt đối không Flat call.' },
-                    MP: { range1: 'TT+, AK (Shove All-in)', range2: 'Fold hết còn lại', sizing: 'Shove All-in', notes: 'Không Flat call khi stack < 12BB.' },
-                    HJ: { range1: 'TT+, AK, AQs (Shove)', range2: 'Fold hết còn lại', sizing: 'Shove All-in', notes: 'Chỉ 3-bet Shove hoặc Fold.' },
-                    CO: { range1: '88+, AJ+, KQ (Shove)', range2: 'Fold hết còn lại', sizing: 'Shove All-in', notes: 'Rộng hơn một chút nếu người open ở MP/HJ.' },
-                    BTN: { range1: '77+, ATs+, AJo+, KQs (Shove)', range2: 'Fold còn lại', sizing: 'Shove All-in', notes: 'Tận dụng vị trí để Shove cách ly.' },
-                    SB: { range1: '88+, AJs+, AQo+ (Shove All-in)', range2: 'Fold', sizing: 'Shove All-in', notes: 'Đừng Call ở SB vì BB đằng sau có thể Shove ép văng.' },
-                    BB: { range1: 'Vs UTG: TT+, AK | Vs Late (CO/BTN): 66+, AT+, KQs', range2: 'Call: Các bài Odd ngon giá rẻ (Suited Connectors cao)', sizing: 'Call hoặc Shove', notes: 'Tận dụng Pot Odds nếu đối thủ chỉ min-raise, nhưng ưu tiên Shove nếu có Fold Equity.' }
+                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
+                    UTG1: { r1: 'JJ+, AKs, AKo', r2: '', size: 'Shove All-in', notes: 'Đối mặt UTG open: Chỉ Shove bài Premium, không Flat call.' },
+                    MP:   { r1: 'TT+, AKs, AKo', r2: '', size: 'Shove All-in', notes: 'Không Flat call khi stack < 12BB.' },
+                    HJ:   { r1: 'TT+, AKs, AKo, AQs', r2: '', size: 'Shove All-in', notes: 'Chỉ 3-bet Shove hoặc Fold.' },
+                    CO:   { r1: '88+, AJs+, AQo+, KQs', r2: '', size: 'Shove All-in', notes: 'Shove cách ly đối thủ ở vị trí trước.' },
+                    BTN:  { r1: '77+, ATs+, AJo+, KQs', r2: '', size: 'Shove All-in', notes: 'Tận dụng vị trí để Shove cách ly.' },
+                    SB:   { r1: '88+, AJs+, AQo+', r2: '', size: 'Shove All-in', notes: 'Đừng Call ở SB vì BB đằng sau có thể Shove ép văng.' },
+                    BB:   { r1: '66+, ATs+, AJo+, KQs', r2: 'Suited Connectors', size: 'Call hoặc Shove', notes: 'Chỉ call nếu được pot odds cực rẻ, còn lại Shove hoặc Fold.' }
                 }
             },
             '12-25': {
-                mode: 'VS OPEN: 3-BET RESTEAL & CALL (12-25 BB)',
-                badgeClass: 'badge-resteal',
+                mode: 'VS OPEN: 3-BET RESTEAL & CALL (12-25 BB)', badgeClass: 'badge-resteal',
                 data: {
-                    UTG: { range1: '---', sizing: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { range1: '3-Bet Shove: JJ+, AK', range2: 'Call: 88-TT, AQs (nếu stack gần 25BB)', sizing: '3-Bet Shove', notes: 'Đối mặt UTG: Rất cẩn trọng, range UTG cực mạnh.' },
-                    MP: { range1: '3-Bet Shove: TT+, AK, AQs', range2: 'Call: 77-99, KQs, QJs', sizing: '3-Bet Shove / Call', notes: 'Hạn chế Call nếu đằng sau còn nhiều đối thủ Aggressive.' },
-                    HJ: { range1: '3-Bet Shove: TT+, AK | Bluff Shove: A2s-A5s (vs CO/MP)', range2: 'Call: 66-99, AJs, KQs', sizing: '3-Bet Shove hoặc Call 2BB', notes: 'Resteal rất hiệu quả ở mốc này.' },
-                    CO: { range1: '3-Bet: JJ+, AK | Resteal Shove: 77-TT, AJs, A5s', range2: 'Call: 22-66 (Set-mine rẻ), Suited Broadways', sizing: '3-Bet Shove hoặc Min-Call', notes: 'Áp lực lên vị trí MP/HJ đã open.' },
-                    BTN: { range1: '3-Bet: TT+, AK | Bluff 3-Bet: A2s-A5s, KJs', range2: 'Flat Call: 22-99, A9s+, KTs+, QTs+, JTs, T9s', sizing: '3-Bet 3x hoặc Call IP', notes: 'Có vị trí hoàn hảo, Flat Call cực kỳ có lợi thế Postflop.' },
-                    SB: { range1: '3-Bet Shove: 88-TT, AJs, A2s-A5s | 3-Bet to: JJ+, AK', range2: 'HẠN CHẾ FLAT CALL Ở SB (Rất dễ bị kẹp OOP)', sizing: '3-Bet 3.5x - 4x hoặc Shove', notes: 'Ở Micro, Flat Call SB là rò rỉ chip lớn nhất. Hãy 3-Bet hoặc Fold!' },
-                    BB: { range1: '3-Bet Shove vs BTN Open: 77-TT, AJs, A2s-A5s, KQ', range2: 'Defend Call rộng: Bất kỳ đôi nào, Ax suited, Connectors', sizing: 'Call 1BB hoặc 3-Bet Shove', notes: 'Được giảm giá 1BB nên defend call rộng, nhưng cần kỷ luật check-fold flop.' }
+                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
+                    UTG1: { r1: 'JJ+, AKs, AKo', r2: '88-TT, AQs', size: '3-Bet Shove / Call', notes: 'Đối mặt UTG: Cực kỳ cẩn trọng.' },
+                    MP:   { r1: 'TT+, AKs, AKo, AQs', r2: '77-99, KQs, QJs', size: '3-Bet Shove / Call', notes: 'Hạn chế Call nếu đằng sau còn nhiều đối thủ Aggressive.' },
+                    HJ:   { r1: 'TT+, AKs, AKo, A2s-A5s', r2: '66-99, AJs, KQs', size: '3-Bet Shove / Call', notes: 'Resteal rất hiệu quả ở mốc này.' },
+                    CO:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, AJs, KQs, QJs', size: '3-Bet Shove / Call', notes: 'Áp lực lên MP/HJ đã open.' },
+                    BTN:  { r1: 'TT+, AKs, AKo, A2s-A5s', r2: '22-99, A9s+, KTs+, QTs+, JTs, T9s', size: '3-Bet 3x / Call IP', notes: 'Có vị trí hoàn hảo, Flat Call cực kỳ có lợi thế Postflop.' },
+                    SB:   { r1: 'JJ+, AKs, AKo, 88-TT, A2s-A5s', r2: '', size: '3-Bet 3.5x - 4x hoặc Shove', notes: 'Ở Micro, Flat Call SB là rò rỉ chip lớn nhất. Hãy 3-Bet hoặc Fold!' },
+                    BB:   { r1: '77-TT, AJs, A2s-A5s, KQo', r2: '22-66, A2s+, K8s+, Q9s+, Suited Connectors', size: 'Call 1BB hoặc 3-Bet Shove', notes: 'Được giảm giá 1BB nên defend call rộng.' }
                 }
             },
             '25-50': {
-                mode: 'VS OPEN: 3-BET & FLAT CALL STANDARD (25-50 BB)',
-                badgeClass: 'badge-main',
+                mode: 'VS OPEN: 3-BET & FLAT CALL STANDARD (25-50 BB)', badgeClass: 'badge-main',
                 data: {
-                    UTG: { range1: '---', sizing: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { range1: '3-Bet Value: QQ+, AKs | Bluff: A5s', range2: 'Call: 99-JJ, AQs, KQs', sizing: '3-Bet size 3x (IP) / 3.5x (OOP)', notes: 'Không 3-bet lung tung vs UTG.' },
-                    MP: { range1: '3-Bet Value: JJ+, AK | Bluff: A4s-A5s', range2: 'Call: 88-TT, AJs, KQs, QJs', sizing: '3-Bet 3x', notes: 'Giữ range call bài có khả năng tạo nut.' },
-                    HJ: { range1: '3-Bet Value: TT+, AK | Bluff: A2s-A5s, KJs', range2: 'Call: 77-99, ATs+, KTs+, QTs+, JTs', sizing: '3-Bet 3x', notes: 'Tấn công đối thủ open lỏng ở MP.' },
-                    CO: { range1: '3-Bet: TT+, AQ+, A5s, KQs', range2: 'Flat Call: 22-99, Suited Connectors, Broadways', sizing: '3-Bet 3x / Call IP', notes: 'Flat call rất lời nhờ vị trí đè bẹp các vị trí trước.' },
-                    BTN: { range1: '3-Bet Value: TT+, AQ+ | 3-Bet Bluff: A2s-A5s, K9s, T8s', range2: 'Flat Call: 22-99, Mọi Suited Ax, KTs+, QTs+, Connectors 65s+', sizing: '3-Bet 3x / Call IP', notes: 'Vị trí vua. Flat call để outplay đối thủ sau flop.' },
-                    SB: { range1: '3-Bet Pure: TT+, AQ+, A5s, KQs (Size 3.5x - 4x)', range2: 'Fold hầu hết, CHỈ Flat Call với 22-66 nếu pot multiway', sizing: '3-Bet 3.5x - 4x', notes: 'Tuyệt đối không Flat call OOP với bài rác. 3-Bet hoặc Fold!' },
-                    BB: { range1: '3-Bet vs BTN/CO: JJ+, AK (Value), A2s-A5s, KJs (Bluff)', range2: 'Defend Call: Rất rộng (22-TT, Mọi Ax suited, Connectors)', sizing: 'Call 1.1x hoặc 3-Bet 3.5x', notes: 'Bảo vệ mù tối đa. Tận dụng Check-Raise ở Flop có texture thuận lợi.' }
+                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
+                    UTG1: { r1: 'QQ+, AKs', r2: '99-JJ, AQs, KQs', size: '3-Bet 3x / Call', notes: 'Không 3-bet lung tung vs UTG.' },
+                    MP:   { r1: 'JJ+, AKs, AKo, A5s', r2: '88-TT, AJs, KQs, QJs', size: '3-Bet 3x / Call', notes: 'Giữ range call bài có khả năng tạo nut.' },
+                    HJ:   { r1: 'TT+, AKs, AKo, A4s-A5s, KJs', r2: '77-99, ATs+, KTs+, QTs+, JTs', size: '3-Bet 3x / Call', notes: 'Tấn công đối thủ open lỏng ở MP.' },
+                    CO:   { r1: 'TT+, AQ+, A5s, KQs', r2: '22-99, Suited Connectors, Broadways', size: '3-Bet 3x / Call IP', notes: 'Flat call rất lời nhờ vị trí đè bẹp các vị trí trước.' },
+                    BTN:  { r1: 'TT+, AQ+, A2s-A5s, K9s, T8s', r2: '22-99, Mọi Suited, KTs+, QTs+, Connectors', size: '3-Bet 3x / Call IP', notes: 'Vị trí vua. Flat call để outplay đối thủ sau flop.' },
+                    SB:   { r1: 'TT+, AQ+, A5s, KQs', r2: '22-66', size: '3-Bet 3.5x - 4x', notes: 'Tuyệt đối không Flat call OOP với bài rác. 3-Bet hoặc Fold!' },
+                    BB:   { r1: 'JJ+, AKs, AKo, A2s-A5s, KJs', r2: '22-TT, Mọi Ax, Broadways, Suited Connectors', size: 'Call 1.1x hoặc 3-Bet 3.5x', notes: 'Bảo vệ mù tối đa. Tận dụng Check-Raise ở Flop.' }
                 }
             },
             '>50': {
-                mode: 'VS OPEN: DEEP STACK IMPLIED ODDS (>50 BB)',
-                badgeClass: 'badge-deep',
+                mode: 'VS OPEN: DEEP STACK IMPLIED ODDS (>50 BB)', badgeClass: 'badge-deep',
                 data: {
-                    UTG: { range1: '---', sizing: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { range1: '3-Bet: QQ+, AK', range2: 'Flat Call: 22-JJ, AQs, Suited Connectors', sizing: '3-Bet 3x', notes: 'Set-mining cực mạnh khi stack > 50BB.' },
-                    MP: { range1: '3-Bet: JJ+, AK, A5s', range2: 'Flat Call: 22-TT, AJs, KQs, Suited Connectors', sizing: '3-Bet 3x', notes: 'Tận dụng Implied Odds ăn trọn stack đối thủ.' },
-                    HJ: { range1: '3-Bet: TT+, AK, A4s-A5s, KJs', range2: 'Flat Call: 22-99, Suited Ax, Connectors', sizing: '3-Bet 3x', notes: 'Tránh sa lầy vào pair nhỏ nếu không hit set.' },
-                    CO: { range1: '3-Bet: TT+, AQ+, A2s-A5s', range2: 'Flat Call: Mọi Pair 22-99, Mọi Suited Connector, Ax suited', sizing: '3-Bet 3x / Call IP', notes: 'Vị trí tuyệt vời để khai thác đối thủ sau flop.' },
-                    BTN: { range1: '3-Bet Polarized: JJ+, AK (Value) & A2s-A5s, Connectors nhỏ (Bluff)', range2: 'Flat Call cực rộng: Mọi pocket pair, suited cards có tiềm năng', sizing: '3-Bet 3x / Call IP', notes: 'Đừng ngại Flat Call ở BTN khi Deep Stack.' },
-                    SB: { range1: 'Linear 3-Bet: TT+, AQ+, KQs, A5s (Size 4x)', range2: 'Hạn chế tối đa Flat Call', sizing: '3-Bet 4x Pot', notes: 'Size 3-bet từ SB phải to (4x) để triệt tiêu lợi thế vị trí của đối thủ.' },
-                    BB: { range1: '3-Bet: JJ+, AK, A2s-A5s', range2: 'Defend Call: Hầu như mọi bài có tiềm năng liên kết', sizing: 'Call / 3-Bet 4x', notes: 'Tận dụng Odds tốt, chơi cẩn thận khi đối thủ bet nhiều barrel.' }
+                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
+                    UTG1: { r1: 'QQ+, AKs', r2: '22-JJ, AQs, Suited Connectors', size: '3-Bet 3x / Call', notes: 'Set-mining cực mạnh khi stack > 50BB.' },
+                    MP:   { r1: 'JJ+, AKs, AKo, A5s', r2: '22-TT, AJs, KQs, Suited Connectors', size: '3-Bet 3x / Call', notes: 'Tận dụng Implied Odds ăn trọn stack đối thủ.' },
+                    HJ:   { r1: 'TT+, AKs, AKo, A4s-A5s, KJs', r2: '22-99, Suited Ax, Connectors', size: '3-Bet 3x / Call', notes: 'Tránh sa lầy vào pair nhỏ nếu không hit set.' },
+                    CO:   { r1: 'TT+, AQ+, A2s-A5s', r2: '22-99, Mọi Suited, Connectors, Ax suited', size: '3-Bet 3x / Call IP', notes: 'Vị trí tuyệt vời để khai thác đối thủ sau flop.' },
+                    BTN:  { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, Mọi Suited, Mọi Connectors, Broadways', size: '3-Bet 3x / Call IP', notes: 'Đừng ngại Flat Call ở BTN khi Deep Stack.' },
+                    SB:   { r1: 'TT+, AQ+, KQs, A5s', r2: '', size: '3-Bet 4x Pot', notes: 'Size 3-bet từ SB phải to (4x) để triệt tiêu lợi thế vị trí của đối thủ.' },
+                    BB:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, Mọi Ax, Mọi Suited, Connectors', size: 'Call / 3-Bet 4x', notes: 'Tận dụng Odds tốt, chơi cẩn thận khi đối thủ bet nhiều barrel.' }
                 }
             }
         },
-
-        // ==========================================
-        // 3. MÌNH ĐÃ OPEN VÀ BỊ ĐỐI THỦ 3-BET
-        // ==========================================
         'VS_3BET': {
             '<12': {
-                mode: 'VS 3-BET SHORT STACK (<12 BB)',
-                badgeClass: 'badge-push',
+                mode: 'VS 3-BET SHORT STACK (<12 BB)', badgeClass: 'badge-push',
                 data: {
-                    UTG: { range1: '4-Bet Shove: JJ+, AK', range2: 'Fold hết còn lại', sizing: 'All-in', notes: 'Đã open thì bị 3-bet Shove chỉ call bài Nut.' },
-                    UTG1: { range1: '4-Bet Shove: JJ+, AK', range2: 'Fold còn lại', sizing: 'All-in', notes: 'Không cố đấm ăn xôi với bài trung bình.' },
-                    MP: { range1: '4-Bet Shove: TT+, AK', range2: 'Fold còn lại', sizing: 'All-in', notes: 'Micro 3-bet rất hẹp, hãy tôn trọng họ.' },
-                    HJ: { range1: '4-Bet Shove: TT+, AK, AQs', range2: 'Fold còn lại', sizing: 'All-in', notes: 'Chỉ Call All-in với top bài.' },
-                    CO: { range1: '4-Bet Shove: 99+, AQ+', range2: 'Fold còn lại', sizing: 'All-in', notes: 'Nếu đối thủ 3-bet từ Blinds, có thể mở rộng nhẹ.' },
-                    BTN: { range1: '4-Bet Shove: 88+, AJ+, KQ', range2: 'Fold còn lại', sizing: 'All-in', notes: 'Blinds resteal thường rộng hơn.' },
-                    SB: { range1: '4-Bet Shove: TT+, AK', range2: 'Fold còn lại', sizing: 'All-in', notes: 'Bị BB 3-bet shove: Thắt chặt range call.' },
-                    BB: { range1: '--- (BB không open)', sizing: '---', notes: 'BB không phải người Open.' }
+                    UTG:  { r1: 'JJ+, AKs, AKo', r2: '', size: 'All-in Shove', notes: 'Đã open thì bị 3-bet Shove chỉ call bài Nut.' },
+                    UTG1: { r1: 'JJ+, AKs, AKo', r2: '', size: 'All-in', notes: 'Không cố đấm ăn xôi với bài trung bình.' },
+                    MP:   { r1: 'TT+, AKs, AKo', r2: '', size: 'All-in', notes: 'Micro 3-bet rất hẹp, hãy tôn trọng họ.' },
+                    HJ:   { r1: 'TT+, AKs, AKo, AQs', r2: '', size: 'All-in', notes: 'Chỉ Call All-in với top bài.' },
+                    CO:   { r1: '99+, AQ+, AKo', r2: '', size: 'All-in', notes: 'Nếu đối thủ 3-bet từ Blinds, có thể mở rộng nhẹ.' },
+                    BTN:  { r1: '88+, AJs+, AQo+, KQo', r2: '', size: 'All-in', notes: 'Blinds resteal thường rộng hơn.' },
+                    SB:   { r1: 'TT+, AKs, AKo', r2: '', size: 'All-in', notes: 'Bị BB 3-bet shove: Thắt chặt range call.' },
+                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
                 }
             },
             '12-25': {
-                mode: 'VS 3-BET KHI CÓ 12-25 BB',
-                badgeClass: 'badge-resteal',
+                mode: 'VS 3-BET KHI CÓ 12-25 BB', badgeClass: 'badge-resteal',
                 data: {
-                    UTG: { range1: '4-Bet Shove: QQ+, AK', range2: 'Call 3-Bet: JJ, TT, AQs (nếu đối thủ min 3-bet)', sizing: '4-Bet Shove / Fold', notes: 'Nếu bị Shove -> Fold sạch ngoại trừ QQ+, AK.' },
-                    UTG1: { range1: '4-Bet Shove: QQ+, AK', range2: 'Call: TT-JJ, AQs', sizing: '4-Bet Shove', notes: 'Tôn trọng 3-bet ở vị trí sớm.' },
-                    MP: { range1: '4-Bet Shove: JJ+, AK', range2: 'Call: 99-TT, AQs', sizing: '4-Bet Shove / Call', notes: 'Fold các bài Ax nhỏ và connectors yếu.' },
-                    HJ: { range1: '4-Bet Shove: TT+, AK | Bluff Shove: A5s', range2: 'Call: 88-99, AJs, KQs', sizing: '4-Bet Shove', notes: 'Đề phòng đối thủ ở Blinds resteal.' },
-                    CO: { range1: '4-Bet Shove: 99+, AQ+ | Shove Bluff: A4s-A5s', range2: 'Call: 77-88, AJs, KQs (nếu có IP)', sizing: '4-Bet Shove / Call IP', notes: 'Nếu đối thủ 3-bet nhỏ và ta có IP -> có thể Call xem flop.' },
-                    BTN: { range1: '4-Bet Shove: 88+, AQ+, A5s', range2: 'Call: 66-77, AJs, KQs, QJs, JTs', sizing: 'Call IP hoặc 4-Bet Shove', notes: 'Có IP là lợi thế lớn nhất khi call 3-bet.' },
-                    SB: { range1: '4-Bet Shove: TT+, AK', range2: 'KHÔNG Call OOP khi bị BB 3-bet', sizing: '4-Bet Shove / Fold', notes: 'Ở SB bị BB 3-bet: Chỉ Shove hoặc Fold, không Call vì mất vị trí.' },
-                    BB: { range1: '---', sizing: '---', notes: 'BB không phải người Open.' }
+                    UTG:  { r1: 'QQ+, AKs, AKo', r2: 'TT-JJ, AQs', size: '4-Bet Shove / Call', notes: 'Nếu bị Shove -> Fold sạch ngoại trừ QQ+, AK.' },
+                    UTG1: { r1: 'QQ+, AKs, AKo', r2: 'TT-JJ, AQs', size: '4-Bet Shove', notes: 'Tôn trọng 3-bet ở vị trí sớm.' },
+                    MP:   { r1: 'JJ+, AKs, AKo', r2: '99-TT, AQs', size: '4-Bet Shove / Call', notes: 'Fold các bài Ax nhỏ và connectors yếu.' },
+                    HJ:   { r1: 'TT+, AKs, AKo, A5s', r2: '88-99, AJs, KQs', size: '4-Bet Shove', notes: 'Đề phòng đối thủ ở Blinds resteal.' },
+                    CO:   { r1: '99+, AQ+, A4s-A5s', r2: '77-88, AJs, KQs', size: '4-Bet Shove / Call IP', notes: 'Nếu đối thủ 3-bet nhỏ và ta có IP -> có thể Call xem flop.' },
+                    BTN:  { r1: '88+, AQ+, A5s', r2: '66-77, AJs, KQs, QJs, JTs', size: 'Call IP hoặc 4-Bet Shove', notes: 'Có IP là lợi thế lớn nhất khi call 3-bet.' },
+                    SB:   { r1: 'TT+, AKs, AKo', r2: '', size: '4-Bet Shove / Fold', notes: 'Ở SB bị BB 3-bet: Chỉ Shove hoặc Fold, không Call vì mất vị trí.' },
+                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
                 }
             },
             '25-50': {
-                mode: 'VS 3-BET: 4-BET & DEFEND (25-50 BB)',
-                badgeClass: 'badge-main',
+                mode: 'VS 3-BET: 4-BET & DEFEND (25-50 BB)', badgeClass: 'badge-main',
                 data: {
-                    UTG: { range1: '4-Bet: KK+, AKs (Size 2.2x - 2.5x 3-bet)', range2: 'Call 3-Bet: QQ, JJ, TT, AKo, AQs', sizing: 'Call / 4-Bet', notes: 'Fold hết các suited connectors nhỏ đã open.' },
-                    UTG1: { range1: '4-Bet: KK+, AK', range2: 'Call: JJ, TT, AQs, KQs', sizing: 'Call / 4-Bet', notes: 'Thận trọng, người 3-bet UTG1 thường cầm bài quái vật.' },
-                    MP: { range1: '4-Bet: QQ+, AK | 4-Bet Bluff: A5s', range2: 'Call: TT, JJ, AQs, KQs, JTs', sizing: '4-Bet 2.3x / Call', notes: 'Fold các broadway yếu như QTo, KJo.' },
-                    HJ: { range1: '4-Bet: JJ+, AK | Bluff: A4s-A5s', range2: 'Call: 99-TT, AJs, AQs, KQs, QJs', sizing: '4-Bet / Call', notes: 'Bắt đầu có range 4-bet bluff nhẹ với Ax suited.' },
-                    CO: { range1: '4-Bet Value: JJ+, AK | 4-Bet Bluff: A2s-A5s', range2: 'Call: 88-TT, ATs+, KTs+, QJs, JTs, T9s', sizing: 'Call IP hoặc 4-Bet', notes: 'Nếu người 3-bet là Blinds, ta có In Position tha hồ float flop.' },
-                    BTN: { range1: '4-Bet Value: TT+, AK | 4-Bet Bluff: A2s-A5s, K9s', range2: 'Call: 66-99, A9s+, KTs+, QTs+, Suited Connectors', sizing: 'Call IP (Rất khuyến khích)', notes: 'Tận dụng IP để outplay đối thủ c-bet ở Flop.' },
-                    SB: { range1: '4-Bet: JJ+, AK, A5s', range2: 'Hạn chế Call OOP: Chỉ Call TT, AQs', sizing: '4-Bet to hoặc Fold', notes: 'Đánh OOP sau flop khi bị 3-bet là cơn ác mộng ở Micro.' },
-                    BB: { range1: '---', sizing: '---', notes: 'BB không phải người Open.' }
+                    UTG:  { r1: 'KK+, AKs', r2: 'TT-QQ, AKo, AQs', size: 'Call / 4-Bet', notes: 'Fold hết các suited connectors nhỏ đã open.' },
+                    UTG1: { r1: 'KK+, AKs, AKo', r2: 'TT-JJ, AQs, KQs', size: 'Call / 4-Bet', notes: 'Thận trọng, người 3-bet UTG1 thường cầm bài quái vật.' },
+                    MP:   { r1: 'QQ+, AKs, AKo, A5s', r2: 'TT-JJ, AQs, KQs, JTs', size: '4-Bet 2.3x / Call', notes: 'Fold các broadway yếu như QTo, KJo.' },
+                    HJ:   { r1: 'JJ+, AKs, AKo, A4s-A5s', r2: '99-TT, AJs, AQs, KQs, QJs', size: '4-Bet / Call', notes: 'Bắt đầu có range 4-bet bluff nhẹ với Ax suited.' },
+                    CO:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '88-TT, ATs+, KTs+, QJs, JTs, T9s', size: 'Call IP hoặc 4-Bet', notes: 'Nếu người 3-bet là Blinds, ta có In Position tha hồ float flop.' },
+                    BTN:  { r1: 'TT+, AKs, AKo, A2s-A5s, K9s', r2: '66-99, A9s+, KTs+, QTs+, Suited Connectors', size: 'Call IP (Rất khuyến khích)', notes: 'Tận dụng IP để outplay đối thủ c-bet ở Flop.' },
+                    SB:   { r1: 'JJ+, AKs, AKo, A5s', r2: 'TT, AQs', size: '4-Bet to hoặc Fold', notes: 'Đánh OOP sau flop khi bị 3-bet là cơn ác mộng ở Micro.' },
+                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
                 }
             },
             '>50': {
-                mode: 'VS 3-BET KHI DEEP STACK (>50 BB)',
-                badgeClass: 'badge-deep',
+                mode: 'VS 3-BET KHI DEEP STACK (>50 BB)', badgeClass: 'badge-deep',
                 data: {
-                    UTG: { range1: '4-Bet: KK+, AKs', range2: 'Call 3-Bet: 22-QQ, AKo, AQs, Suited Connectors to', sizing: 'Call / 4-Bet', notes: 'Deep stack cho phép Set-mine khi call 3-bet.' },
-                    UTG1: { range1: '4-Bet: KK+, AKs', range2: 'Call: 22-QQ, AQs, KQs', sizing: 'Call / 4-Bet', notes: 'Ăn trọn stack nếu đối thủ cầm overpair khi ta hit set.' },
-                    MP: { range1: '4-Bet: QQ+, AK | Bluff: A5s', range2: 'Call: 22-JJ, AJs+, KQs, QJs, Connectors', sizing: 'Call / 4-Bet', notes: 'Tránh call với Offsuit rác.' },
-                    HJ: { range1: '4-Bet: QQ+, AK | Bluff: A4s-A5s', range2: 'Call: 22-TT, ATs+, KTs+, Connectors', sizing: 'Call / 4-Bet', notes: 'Call với bài có tính biến hóa cao.' },
-                    CO: { range1: '4-Bet: JJ+, AK | Bluff: A2s-A5s', range2: 'Call IP: 22-TT, Mọi Ax suited, Connectors 76s+', sizing: 'Call IP', notes: 'Có vị trí, call thoải mái để set-mine và bắt bài c-bet.' },
-                    BTN: { range1: '4-Bet: TT+, AK | Bluff: A2s-A5s', range2: 'Call IP cực rộng: Hầu như toàn bộ range open có kết nối', sizing: 'Call IP', notes: 'Chỉ fold bài rác nhất đã dùng để steal blind.' },
-                    SB: { range1: '4-Bet to (2.7x - 3x size 3-bet): JJ+, AK', range2: 'Call hạn chế: TT-QQ, AQs', sizing: '4-Bet to', notes: 'Nếu không có 4-bet, hãy Fold thay vì Call cố khi OOP.' },
-                    BB: { range1: '---', sizing: '---', notes: 'BB không phải người Open.' }
+                    UTG:  { r1: 'KK+, AKs', r2: '22-QQ, AKo, AQs, KQs', size: 'Call / 4-Bet', notes: 'Deep stack cho phép Set-mine khi call 3-bet.' },
+                    UTG1: { r1: 'KK+, AKs', r2: '22-QQ, AQs, KQs', size: 'Call / 4-Bet', notes: 'Ăn trọn stack nếu đối thủ cầm overpair khi ta hit set.' },
+                    MP:   { r1: 'QQ+, AKs, AKo, A5s', r2: '22-JJ, AJs+, KQs, QJs, Suited Connectors', size: 'Call / 4-Bet', notes: 'Tránh call với Offsuit rác.' },
+                    HJ:   { r1: 'QQ+, AKs, AKo, A4s-A5s', r2: '22-TT, ATs+, KTs+, Connectors', size: 'Call / 4-Bet', notes: 'Call với bài có tính biến hóa cao.' },
+                    CO:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, Mọi Ax, Suited Connectors', size: 'Call IP', notes: 'Có vị trí, call thoải mái để set-mine và bắt bài c-bet.' },
+                    BTN:  { r1: 'TT+, AKs, AKo, A2s-A5s', r2: '22-99, Mọi Suited, Mọi Connectors', size: 'Call IP', notes: 'Chỉ fold bài rác nhất đã dùng để steal blind.' },
+                    SB:   { r1: 'JJ+, AKs, AKo', r2: 'TT-QQ, AQs', size: '4-Bet to', notes: 'Nếu không có 4-bet, hãy Fold thay vì Call cố khi OOP.' },
+                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
                 }
             }
         }
@@ -477,27 +561,25 @@
 
     function setStack(stack, btn) {
         currentStack = stack;
-        updateGroupActive(btn);
+        updateActive(btn);
         render();
     }
 
     function setScenario(scen, btn) {
         currentScenario = scen;
-        updateGroupActive(btn);
+        updateActive(btn);
         render();
     }
 
     function setPos(pos, btn) {
         currentPos = pos;
-        updateGroupActive(btn);
+        updateActive(btn);
         render();
     }
 
-    function updateGroupActive(btn) {
-        let siblings = btn.parentNode.children;
-        for (let sib of siblings) {
-            sib.classList.remove('active');
-        }
+    function updateActive(btn) {
+        const sibs = btn.parentNode.children;
+        for (let s of sibs) s.classList.remove('active');
         btn.classList.add('active');
     }
 
@@ -507,60 +589,68 @@
         const badgeClass = scenData.badgeClass;
         const item = scenData.data[currentPos];
 
-        let contentHTML = '';
+        document.getElementById('modeBadge').className = 'mode-badge ' + badgeClass;
+        document.getElementById('modeBadge').innerText = mode;
+        document.getElementById('posStackInfo').innerText = `${currentPos} | ${currentStack} BB`;
 
+        // Render Legend Bar
+        let legendHTML = '';
         if (currentScenario === 'OPEN') {
-            contentHTML = `
-                <div class="range-block gold">
-                    <div class="range-title" style="color: var(--accent-gold);">🎯 RANGE OPEN (RFI):</div>
-                    <div class="range-content">${item.range1}</div>
-                </div>
+            legendHTML = `
+                <div class="legend-item"><div class="legend-box" style="background:#ff5252;"></div> 🟥 OPEN RAISE / PUSH</div>
+                <div class="legend-item"><div class="legend-box" style="background:#1b1f27; border: 1px solid #4a5568;"></div> ⬛ FOLD</div>
             `;
         } else if (currentScenario === 'VS_OPEN') {
-            contentHTML = `
-                <div class="range-block orange">
-                    <div class="range-title" style="color: var(--accent-orange);">🔥 3-BET (VALUE / RESTEAL / SHOVE):</div>
-                    <div class="range-content">${item.range1}</div>
-                </div>
-                ${item.range2 ? `
-                <div class="range-block green">
-                    <div class="range-title" style="color: var(--accent-green);">🛡️ FLAT CALL DEFEND:</div>
-                    <div class="range-content">${item.range2}</div>
-                </div>` : ''}
+            legendHTML = `
+                <div class="legend-item"><div class="legend-box" style="background:#ff9100;"></div> 🟧 3-BET (VALUE/BLUFF)</div>
+                <div class="legend-item"><div class="legend-box" style="background:#00e676;"></div> 🟩 FLAT CALL DEFEND</div>
+                <div class="legend-item"><div class="legend-box" style="background:#1b1f27; border: 1px solid #4a5568;"></div> ⬛ FOLD</div>
             `;
         } else if (currentScenario === 'VS_3BET') {
-            contentHTML = `
-                <div class="range-block red">
-                    <div class="range-title" style="color: var(--accent-red);">🚀 4-BET / SHOVE ALL-IN:</div>
-                    <div class="range-content">${item.range1}</div>
-                </div>
-                ${item.range2 ? `
-                <div class="range-block green">
-                    <div class="range-title" style="color: var(--accent-green);">🛡️ CALL 3-BET (DEFEND):</div>
-                    <div class="range-content">${item.range2}</div>
-                </div>` : ''}
+            legendHTML = `
+                <div class="legend-item"><div class="legend-box" style="background:#ff5252;"></div> 🟥 4-BET / SHOVE</div>
+                <div class="legend-item"><div class="legend-box" style="background:#00e676;"></div> 🟩 CALL 3-BET</div>
+                <div class="legend-item"><div class="legend-box" style="background:#1b1f27; border: 1px solid #4a5568;"></div> ⬛ FOLD</div>
             `;
         }
+        document.getElementById('legendBar').innerHTML = legendHTML;
 
-        const html = `
-            <div>
-                <span class="mode-badge ${badgeClass}">${mode}</span>
-                <span style="float: right; font-weight: bold; color: var(--accent-gold);">
-                    ${currentPos} | ${currentStack} BB
-                </span>
-            </div>
+        // TÍNH TOÁN SET BÀI
+        const set1 = expandRange(item.r1);
+        const set2 = expandRange(item.r2);
 
-            ${contentHTML}
+        // VẼ GRID 13x13
+        const grid = document.getElementById('pokerGrid');
+        grid.innerHTML = '';
 
-            <div class="info-row">
-                <span class="info-label">KÍCH THƯỚC BET / ACTION:</span> ${item.sizing}
-            </div>
-            <div class="info-row">
-                <span class="info-label">MẸO EXPLOIT MICRO:</span> ${item.notes}
-            </div>
+        for (let r = 0; r < 13; r++) {
+            for (let c = 0; c < 13; c++) {
+                const hand = MATRIX_HANDS[r][c];
+                const cell = document.createElement('div');
+                cell.className = 'poker-cell';
+                cell.innerText = hand;
+
+                if (set1.has(hand)) {
+                    if (currentScenario === 'VS_OPEN') {
+                        cell.classList.add('cell-3bet');
+                    } else {
+                        cell.classList.add('cell-raise');
+                    }
+                } else if (set2.has(hand)) {
+                    cell.classList.add('cell-call');
+                } else {
+                    cell.classList.add('cell-fold');
+                }
+
+                grid.appendChild(cell);
+            }
+        }
+
+        // PANEL THÔNG TIN
+        document.getElementById('infoPanel').innerHTML = `
+            <div><b>KÍCH THƯỚC BET / ACTION:</b> ${item.size}</div>
+            <div style="margin-top: 4px;"><b>MẸO EXPLOIT MICRO:</b> ${item.notes}</div>
         `;
-
-        document.getElementById('outputCard').innerHTML = html;
     }
 
     // Khởi tạo chạy lần đầu
