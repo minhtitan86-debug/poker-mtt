@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro MTT 8-Max Assistant</title>
+    <style>
+        :root {
+            --bg-color: #121418;
+            --card-bg: #1e222a;
+            --accent-green: #00e676;
+            --accent-gold: #ffd700;
+            --accent-blue: #29b6f6;
+            --accent-red: #ff5252;
+            --text-color: #e0e6ed;
+            --text-dim: #90a4ae;
+            --border-color: #2c323f;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin: 0 0 5px 0;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            margin: 15px 0 8px 0;
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .btn-group-pos {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (min-width: 500px) {
+            .btn-group-pos {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+
+        button.opt-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 5px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button.opt-btn:hover {
+            border-color: var(--accent-blue);
+        }
+
+        button.opt-btn.active {
+            background-color: var(--accent-blue);
+            color: #000;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(41, 182, 246, 0.4);
+        }
+
+        .display-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .mode-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-push { background-color: var(--accent-red); color: #fff; }
+        .badge-resteal { background-color: var(--accent-gold); color: #000; }
+        .badge-main { background-color: var(--accent-green); color: #000; }
+        .badge-deep { background-color: var(--accent-blue); color: #000; }
+
+        .range-box {
+            background-color: #15181e;
+            border-left: 4px solid var(--accent-gold);
+            padding: 10px 12px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #fff;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .info-row {
+            margin: 10px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--accent-gold);
+        }
+
+        /* Note đối thủ Quick Reference */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .note-card {
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .note-green { background-color: #1b382b; border: 1px solid var(--accent-green); }
+        .note-blue { background-color: #173242; border: 1px solid var(--accent-blue); }
+        .note-red { background-color: #3d1c1c; border: 1px solid var(--accent-red); }
+        .note-yellow { background-color: #3d351c; border: 1px solid var(--accent-gold); }
+
+        .note-title { font-weight: bold; margin-bottom: 4px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>♠️ MICRO MTT 8-MAX ASSISTANT</h1>
+        <div class="subtitle">Trợ lý Ma trận Preflop & Chiến thuật Exploit Micro GGPoker</div>
+    </header>
+
+    <!-- 1. BƯỚC CHỌN STACK DEPTH -->
+    <div class="section-title">1. Chọn Độ Sâu Stack (Big Blinds)</div>
+    <div class="btn-group">
+        <button class="opt-btn active" onclick="setStack('<12', this)">&lt; 12 BB</button>
+        <button class="opt-btn" onclick="setStack('12-25', this)">12 - 25 BB</button>
+        <button class="opt-btn" onclick="setStack('25-50', this)">25 - 50 BB</button>
+        <button class="opt-btn" onclick="setStack('>50', this)">&gt; 50 BB</button>
+    </div>
+
+    <!-- 2. BƯỚC CHỌN VỊ TRÍ 8-MAX -->
+    <div class="section-title">2. Chọn Vị Trí Trên Bàn (8-Max)</div>
+    <div class="btn-group btn-group-pos">
+        <button class="opt-btn active" onclick="setPos('UTG', this)">UTG</button>
+        <button class="opt-btn" onclick="setPos('UTG1', this)">UTG+1</button>
+        <button class="opt-btn" onclick="setPos('MP', this)">MP</button>
+        <button class="opt-btn" onclick="setPos('HJ', this)">HJ</button>
+        <button class="opt-btn" onclick="setPos('CO', this)">CO</button>
+        <button class="opt-btn" onclick="setPos('BTN', this)">BTN</button>
+        <button class="opt-btn" onclick="setPos('SB', this)">SB</button>
+        <button class="opt-btn" onclick="setPos('BB', this)">BB</button>
+    </div>
+
+    <!-- 3. BẢNG HIỂN THỊ KẾT QUẢ STRATEGY -->
+    <div class="display-card" id="outputCard">
+        <!-- Content JS auto generate -->
+    </div>
+
+    <!-- 4. THAM CHIẾU QUICK NOTE ĐỐI THỦ -->
+    <div class="section-title">3. Nhắc Nhở Exploit Màu Đối Thủ</div>
+    <div class="notes-grid">
+        <div class="note-card note-green">
+            <span class="note-title" style="color: var(--accent-green);">🟢 CALLING STATION</span>
+            • Value Bet to (66-80% Pot)<br>
+            • KHÔNG Bluff ở River<br>
+            • KHÔNG Slowplay
+        </div>
+        <div class="note-card note-blue">
+            <span class="note-title" style="color: var(--accent-blue);">🔵 NIT / SỢ CHẾT</span>
+            • Steal Blind liên tục<br>
+            • C-bet size nhỏ (25-33% Pot)<br>
+            • Fold ngay khi họ Raise
+        </div>
+        <div class="note-card note-red">
+            <span class="note-title" style="color: var(--accent-red);">🔴 MANIAC (NGÁO)</span>
+            • Check để bẫy (Induce)<br>
+            • Call rộng hơn với Top/Middle Pair<br>
+            • Không Bluff lại họ
+        </div>
+        <div class="note-card note-yellow">
+            <span class="note-title" style="color: var(--accent-gold);">🟡 REGULAR</span>
+            • Đánh đúng Blueprint<br>
+            • Tận dụng vị trí IP<br>
+            • Tránh sa lầy Pot to
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentStack = '<12';
+    let currentPos = 'UTG';
+
+    const DB = {
+        '<12': {
+            mode: 'PUSH / FOLD THUẦN TÚY',
+            badgeClass: 'badge-push',
+            UTG: { range: '88+, AJs+, AQo+', sizing: 'Shove All-in (100% Stack)', notes: 'Range hẹp (Top 8-10%). Tuyệt đối không Min-raise/Fold.' },
+            UTG1: { range: '77+, AJs+, AQo+', sizing: 'Shove All-in', notes: 'Range hẹp. Chỉ đẩy All-in bài cực chắc.' },
+            MP: { range: '22+, A8s+, A10o+, KJs+, KQo', sizing: 'Shove All-in', notes: 'Top 15-18% range. Tận dụng bài Ax để cản bài đối thủ.' },
+            HJ: { range: '22+, A5s+, A9o+, K9s+, KJo+, QJs', sizing: 'Shove All-in', notes: 'Mở rộng dần khi có ít người đằng sau.' },
+            CO: { range: '22+, A2s+, A7o+, K9s+, KJo+, Q9s+, J9s+, T9s', sizing: 'Shove All-in', notes: 'Range ~28%. Tấn công áp lực lên BTN và 2 Blinds.' },
+            BTN: { range: '22+, Mọi Ax, K5s+, K8o+, Q8s+, QTo+, J8s+, T8s+, 98s', sizing: 'Shove All-in', notes: 'Range ~45%. Đẩy All-in hầu như mọi hand có lá bài cao hoặc Suited.' },
+            SB: { range: '22+, Mọi Ax, Mọi Kx, Mọi Suited, Q6o+, J7o+', sizing: 'Shove All-in', notes: 'Range ~60% cướp mù khẩn cấp vs BB.' },
+            BB: { range: 'Facing UTG: TT+, AK | Facing BTN: 66+, A8s+, A10o+, KQs', sizing: 'Call All-in', notes: 'Thắt chặt range Call All-in hẹp hơn range Push của đối thủ 30-50%.' }
+        },
+        '12-25': {
+            mode: 'RESTEAL & CƯỚP BLIND',
+            badgeClass: 'badge-resteal',
+            UTG: { range: '77+, ATs+, AJo+, KQs', sizing: 'Min-raise 2.0x', notes: 'Open 12-15%. Bị 3-Bet Shove -> Fold hết ngoại trừ TT+, AK.' },
+            UTG1: { range: '77+, ATs+, AJo+, KQs', sizing: 'Min-raise 2.0x', notes: 'Chơi chắc chắn ở vị trí đầu bàn.' },
+            MP: { range: '55+, A8s+, ATo+, KTs+, QJs, JTs', sizing: 'Min-raise 2.0x', notes: 'Open ~18%. Nếu bị 3-bet từ Late Pos -> Fold phần lớn.' },
+            HJ: { range: '22+, A5s+, A9o+, K9s+, KJo+, QJs', sizing: 'Min-raise 2.0x', notes: 'Chuẩn bị Resteal 3-Bet Shove nếu UTG Open.' },
+            CO: { range: '22+, A2s+, A8o+, K8s+, Q9s+, Suited Connectors', sizing: 'Min-raise 2.0x', notes: 'Resteal 3-Bet Shove vs MP Open: 88-TT, A2s-A5s (Bluff), AJs.' },
+            BTN: { range: '22+, A2s+, A5o+, K5s+, K9o+, Q8s+, Suited Connectors', sizing: 'Min-raise 2.0x', notes: 'Open 40-45%. Bị 3-Bet Shove từ Blinds -> Chỉ Call 99+, AQ+.' },
+            SB: { range: 'Open: 22+, Ax, K8s+ | Resteal vs BTN: A2s-A5s, 77-TT, AJs', sizing: 'Min-raise 2.2x hoặc 3-Bet Shove', notes: 'Tận dụng bài A-x nhỏ làm 3-bet Shove semi-bluff.' },
+            BB: { range: 'Defend Call wide vs BTN | 3-Bet Shove vs BTN Open: 77-TT, A2s-A5s, AJs, KQ', sizing: 'Call 1.2BB hoặc 3-Bet Shove', notes: 'Bảo vệ Blind rộng do Pot Odds ngon, Resteal đúng lúc.' }
+        },
+        '25-50': {
+            mode: 'MAIN GAME (THỦ CÔNG POSTFLOP)',
+            badgeClass: 'badge-main',
+            UTG: { range: '22+, A9s+, AJo+, KTs+, QTs+, JTs, 98s', sizing: 'Open 2.1x', notes: 'C-bet 25-33% Pot ở Flop khô (K-8-3). Check-fold khi hụt ở mặt ướt.' },
+            UTG1: { range: '22+, A9s+, AJo+, KTs+, QTs+, JTs', sizing: 'Open 2.1x', notes: 'Đánh chắc chắn, tránh sa lầy vào Pot to khi OOP.' },
+            MP: { range: '22+, A8s+, ATo+, K9s+, QTs+, JTs, 87s', sizing: 'Open 2.1x', notes: 'Xây dựng pot cẩn thận.' },
+            HJ: { range: '22+, A5s+, A9o+, K8s+, Q9s+, J9s+, 76s+', sizing: 'Open 2.1x', notes: 'Mở rộng dần khi chuẩn bị tới Late Position.' },
+            CO: { range: '22+, A2s+, A7o+, K5s+, K9o+, Q8s+, Suited Connectors', sizing: 'Open 2.1x', notes: 'Tấn công Blinds. Bet Value 50-66% ở mặt bài ướt khi có Top Pair+.' },
+            BTN: { range: '22+, Mọi Ax, mọi Suited, Broadway, Connectors tới 54s', sizing: 'Open 2.1x - 2.2x', notes: 'Tận dụng triệt để lợi thế In Position (IP). C-bet size nhỏ 25% ở mặt dry.' },
+            SB: { range: '22+, A2s+, A8o+, K8s+, Q9s+', sizing: 'Open 2.5x vs BB', notes: 'Nếu BB là Nit -> Auto Raise cướp blind. Nếu BB là Station -> Chờ bài to.' },
+            BB: { range: 'Defend Call rất rộng vs BTN Open | Check-Raise Flop bài Nut/Draw mạnh', sizing: 'Call / Check-Raise', notes: 'Đừng Fold quá dễ dàng ở Flop khi đã Call Preflop. Áp dụng MDF.' }
+        },
+        '>50': {
+            mode: 'DEEP STACK (IMPLIED ODDS & VALUE)',
+            badgeClass: 'badge-deep',
+            UTG: { range: '22+, A2s+, AJo+, KTs+, QTs+, Suited Connectors 76s+', sizing: 'Open 2.2x - 2.5x', notes: 'Set-mining cực kỳ giá trị. Hit Set là ăn trọn Stack đối thủ.' },
+            UTG1: { range: '22+, A2s+, AJo+, KTs+, QTs+', sizing: 'Open 2.2x', notes: 'Ưu tiên các bài có khả năng tạo bài Nut.' },
+            MP: { range: '22+, Mọi Suited Ax, K9s+, Q9s+, Suited Connectors', sizing: 'Open 2.2x', notes: 'Đánh chắc Preflop, build Pot to Postflop khi dính bài mạnh.' },
+            HJ: { range: '22+, Mọi Suited Ax, K8s+, Suited Connectors, Offsuit Broadway', sizing: 'Open 2.2x', notes: 'Tận dụng Implied Odds từ Suited Connectors.' },
+            CO: { range: 'Range rộng (~35%). Mọi Pocket Pair, Suited Connectors, Suited Gappers', sizing: 'Open 2.2x - 2.5x', notes: 'Bet to (66-80% Pot) cả 3 vòng khi cầm Set/Two Pair/Straight/Flush.' },
+            BTN: { range: 'Range cực rộng (~50%).', sizing: 'Open 2.5x', notes: 'Tuyệt đối KHÔNG SLOWPLAY ở Micro khi dính bài mạnh. Tăng trưởng pot hình học.' },
+            SB: { range: 'Chơi chắc chắn, tránh build Pot to khi Out of Position', sizing: 'Open 2.5x - 3.0x', notes: 'Nếu không có bài thực sự mạnh, hạn chế Call 3-bet khi OOP.' },
+            BB: { range: 'Defend Call các bài tiềm năng để xem Flop rẻ', sizing: 'Call / Raise', notes: 'Xử lý khéo léo Postflop, ưu tiên Check-Call/Check-Raise bài mạnh.' }
+        }
+    };
+
+    function setStack(stack, btn) {
+        currentStack = stack;
+        updateActiveBtn(btn);
+        render();
+    }
+
+    function setPos(pos, btn) {
+        currentPos = pos;
+        updateActiveBtn(btn);
+        render();
+    }
+
+    function updateActiveBtn(btn) {
+        let siblings = btn.parentNode.children;
+        for (let sib of siblings) {
+            sib.classList.remove('active');
+        }
+        btn.classList.add('active');
+    }
+
+    function render() {
+        const data = DB[currentStack][currentPos];
+        const mode = DB[currentStack].mode;
+        const badgeClass = DB[currentStack].badgeClass;
+
+        const html = `
+            <div>
+                <span class="mode-badge ${badgeClass}">${mode}</span>
+                <span style="float: right; font-weight: bold; color: var(--accent-gold);">STACK: ${currentStack} BB | POS: ${currentPos}</span>
+            </div>
+            <div class="info-row"><span class="info-label">MA TRẬN HAND RECOMENDED:</span></div>
+            <div class="range-box">${data.range}</div>
+            <div class="info-row"><span class="info-label">SIZE CƯỢC PREFLOP:</span> ${data.sizing}</div>
+            <div class="info-row"><span class="info-label">MẸO EXPLOIT MICRO:</span> ${data.notes}</div>
+        `;
+
+        document.getElementById('outputCard').innerHTML = html;
+    }
+
+    // Init load
+    render();
+</script>
+
+</body>
+</html>
