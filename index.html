@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micro MTT Preflop Master - 4 Parts & 3 Stack Tiers</title>
+    <title>PokerCoaching Preflop Master - 20BB | 40BB | 70BB</title>
     <style>
         :root {
             --bg-color: #0c0f14;
@@ -36,7 +36,6 @@
             max-width: 820px;
         }
 
-        /* HEADER */
         header {
             text-align: center;
             margin-bottom: 20px;
@@ -46,7 +45,7 @@
 
         h1 {
             color: var(--accent-gold);
-            font-size: 1.45rem;
+            font-size: 1.4rem;
             letter-spacing: 0.5px;
             margin-bottom: 4px;
         }
@@ -56,7 +55,7 @@
             font-size: 0.82rem;
         }
 
-        /* 4 PHẦN LỚN ĐƯỢC PHÂN TÁCH BẰNG CARD RIÊNG BIỆT */
+        /* 4 PHẦN CHÍNH */
         .section-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -76,7 +75,7 @@
         }
 
         .part-title {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 700;
             color: var(--accent-blue);
             text-transform: uppercase;
@@ -94,7 +93,7 @@
             color: var(--text-dim);
         }
 
-        /* PHẦN 1: BỘ NÚT CHỌN */
+        /* NÚT CHỌN */
         .group-label {
             font-size: 0.78rem;
             font-weight: 600;
@@ -127,29 +126,28 @@
 
         button.opt-btn:hover { border-color: var(--accent-blue); }
 
-        /* ACTIVE STACK TIER BUTTONS */
-        button.opt-btn.active-stack-short {
+        /* ACTIVE CHO 3 MỐC STACK: 20BB, 40BB, 70BB */
+        button.opt-btn.active-20bb {
             background-color: var(--accent-red);
             color: #fff;
             border-color: var(--accent-red);
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
         }
 
-        button.opt-btn.active-stack-mid {
+        button.opt-btn.active-40bb {
             background-color: var(--accent-orange);
             color: #000;
             border-color: var(--accent-orange);
             box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
         }
 
-        button.opt-btn.active-stack-deep {
+        button.opt-btn.active-70bb {
             background-color: var(--accent-blue);
             color: #000;
             border-color: var(--accent-blue);
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
         }
 
-        /* ACTIVE NORMAL BUTTONS */
         button.opt-btn.active-normal {
             background-color: var(--accent-gold);
             color: #000;
@@ -205,7 +203,7 @@
         .cell-call  { background-color: var(--accent-green); color: #000; }
         .cell-fold  { background-color: #1a202c; color: #4b5563; border: 1px solid rgba(255,255,255,0.02); }
 
-        /* PHẦN 3: PHÂN TÍCH & SIZING */
+        /* PHẦN 3: SIZING & EXPLOIT */
         .info-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -223,7 +221,7 @@
 
         .info-card b { color: var(--accent-gold); }
 
-        /* PHẦN 4: TRAINER LUYỆN TẬP */
+        /* PHẦN 4: TRAINER */
         .trainer-stats {
             display: flex;
             justify-content: space-around;
@@ -318,25 +316,25 @@
 
 <div class="container">
     <header>
-        <h1>♠️ MICRO MTT PREFLOP MASTER</h1>
-        <div class="subtitle">Kiến Trúc 4 Phần • 3 Nhóm Stack Chiến Lược • Tối Ưu Giải Đấu Micro GGPoker</div>
+        <h1>♠️ POKERCOACHING PREFLOP MASTER</h1>
+        <div class="subtitle">Chuẩn Jonathan Little MTT • 3 Mốc 20BB - 40BB - 70BB • 4 Phần Chức Năng</div>
     </header>
 
     <!-- ======================================================== -->
-    <!-- PHẦN 1: BỘ THIẾT LẬP THAM SỐ (3 NHÓM STACK + TÌNH HUỐNG)  -->
+    <!-- PHẦN 1: BỘ THIẾT LẬP THAM SỐ (20BB | 40BB | 70BB)       -->
     <!-- ======================================================== -->
     <div class="section-card">
         <div class="part-header">
-            <span class="part-title">🎯 PHẦN 1: CẤU HÌNH STACK & TÌNH HUỐNG</span>
-            <span class="part-badge">Bước chọn bài</span>
+            <span class="part-title">🎯 PHẦN 1: THIẾT LẬP CHIỀU SÂU STACK & TÌNH HUỐNG</span>
+            <span class="part-badge">PokerCoaching Engine</span>
         </div>
 
-        <!-- 3 NHÓM STACK CHÍNH -->
-        <div class="group-label">1. CHỌN NHÓM ĐỘ SÂU STACK (3 NHÓM CỐT LÕI)</div>
+        <!-- 3 NHÓM STACK CHUẨN POKERCOACHING -->
+        <div class="group-label">1. CHỌN ĐỘ SÂU STACK (3 BẢNG CHUẨN TÀI LIỆU)</div>
         <div class="btn-grid" id="stackGroup">
-            <button class="opt-btn active-stack-short" onclick="setStackTier('SHORT', this)">🔴 SHORT (&lt; 15 BB)<br><span style="font-size:0.7rem; font-weight:normal;">Push / Fold</span></button>
-            <button class="opt-btn" onclick="setStackTier('MID', this)">🟠 MEDIUM (15-35 BB)<br><span style="font-size:0.7rem; font-weight:normal;">Resteal / Min-raise</span></button>
-            <button class="opt-btn" onclick="setStackTier('DEEP', this)">🔵 DEEP (&gt; 35 BB)<br><span style="font-size:0.7rem; font-weight:normal;">Implied Odds / Postflop</span></button>
+            <button class="opt-btn active-20bb" onclick="setStackDepth('20BB', this)">🔴 20 BB<br><span style="font-size:0.7rem; font-weight:normal;">Short / 3-Bet Shove</span></button>
+            <button class="opt-btn" onclick="setStackDepth('40BB', this)">🟠 40 BB<br><span style="font-size:0.7rem; font-weight:normal;">Medium / Main Game</span></button>
+            <button class="opt-btn" onclick="setStackDepth('70BB', this)">🔵 70 BB<br><span style="font-size:0.7rem; font-weight:normal;">Deep / Implied Odds</span></button>
         </div>
 
         <!-- TÌNH HUỐNG -->
@@ -360,54 +358,52 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- PHẦN 2: MA TRẬN 13x13 TRỰC QUAN (VISUAL RANGE GRID)      -->
+    <!-- PHẦN 2: MA TRẬN 13x13 TRỰC QUAN                          -->
     <!-- ======================================================== -->
     <div class="section-card">
         <div class="part-header">
             <span class="part-title">📊 PHẦN 2: MA TRẬN RANGE 13x13 TRỰC QUAN</span>
-            <span id="currentSelectionTag" style="font-weight:bold; color:var(--accent-gold); font-size:0.85rem;">SHORT (&lt;15BB) | UTG | RFI</span>
+            <span id="currentSelectionTag" style="font-weight:bold; color:var(--accent-gold); font-size:0.85rem;">20 BB | UTG | RFI</span>
         </div>
 
-        <!-- CHÚ THÍCH MÀU THEO STACK -->
         <div class="legend-bar" id="legendBar">
-            <div class="legend-item"><div class="legend-box" style="background:var(--accent-red)"></div> 🟥 Shove All-in / 3-Bet</div>
-            <div class="legend-item"><div class="legend-box" style="background:var(--accent-orange)"></div> 🟧 Min-raise (Mid/Deep)</div>
+            <div class="legend-item"><div class="legend-box" style="background:var(--accent-red)"></div> 🟥 3-Bet Shove / Shove All-in</div>
+            <div class="legend-item"><div class="legend-box" style="background:var(--accent-orange)"></div> 🟧 Open Raise / 3-Bet Non-all-in</div>
             <div class="legend-item"><div class="legend-box" style="background:var(--accent-green)"></div> 🟩 Flat Call</div>
             <div class="legend-item"><div class="legend-box" style="background:#1a202c; border:1px solid #4b5563;"></div> ⬛ Fold</div>
         </div>
 
-        <!-- GRID 13x13 -->
         <div class="poker-grid" id="pokerGrid"></div>
     </div>
 
     <!-- ======================================================== -->
-    <!-- PHẦN 3: ĐẶC TẢ HÀNH ĐỘNG, SIZING & MẸO EXPLOIT           -->
+    <!-- PHẦN 3: SIZING & TƯ DUY EXPLOIT THEO 20BB / 40BB / 70BB   -->
     <!-- ======================================================== -->
     <div class="section-card">
         <div class="part-header">
-            <span class="part-title">💡 PHẦN 3: HƯỚNG DẪN SIZING & MẸO EXPLOIT</span>
-            <span class="part-badge">Chiến thuật thực tế</span>
+            <span class="part-title">💡 PHẦN 3: HƯỚNG DẪN SIZING & TƯ DUY THEO STACK</span>
+            <span class="part-badge">Chiến thuật chiều sâu</span>
         </div>
         <div class="info-grid">
             <div class="info-card">
-                <b>QUY ĐỊNH SIZING CHUẨN:</b> <span id="sizingText">Shove All-in toàn bộ 100% Stack. Tuyệt đối không Min-raise/Fold khi &lt;15BB.</span>
+                <b>ĐỊNH MỨC SIZING THEO STACK:</b> <span id="sizingText">Min-raise 2.0x hoặc Shove All-in. Tuyệt đối không Raise to lãng phí chip.</span>
             </div>
             <div class="info-card">
-                <b>NGUYÊN LÝ HÌNH DÁNG RANGE:</b> <span id="rangeShapeText">Range hẹp gồm các bài có lá bài cao (Ax) để cản bài đối thủ và đôi lớn.</span>
+                <b>TƯ DUY BẢN CHẤT CỦA MỐC STACK:</b> <span id="rangeShapeText">Ở 20BB, không còn Implied Odds để Set-mine các đôi 22-55. Bài Ax Suited trở thành vũ khí 3-bet Shove lợi hại nhất.</span>
             </div>
             <div class="info-card">
-                <b>MẸO EXPLOIT ĐẶC THÙ MICRO:</b> <span id="exploitTipText">Người chơi Micro thường Call Shove quá lỏng (bằng các đôi nhỏ). Hãy Shove bài có lá bài to để áp đảo equity.</span>
+                <b>MẸO EXPLOIT MICRO THEO STACK:</b> <span id="exploitTipText">Đối thủ Micro khi có 20BB thường Open xong không dám Call All-in. Hãy Resteal Shove từ Blinds vào CO/BTN.</span>
             </div>
         </div>
     </div>
 
     <!-- ======================================================== -->
-    <!-- PHẦN 4: PHÒNG LUYỆN TẬP PHẢN XẠ THEO STACK (TRAINER)    -->
+    <!-- PHẦN 4: PHÒNG LUYỆN TẬP PHẢN XẠ THEO ĐÚNG STACK         -->
     <!-- ======================================================== -->
     <div class="section-card">
         <div class="part-header">
             <span class="part-title">🎯 PHẦN 4: PHÒNG LUYỆN TẬP PHẢN XẠ THEO STACK</span>
-            <span class="part-badge">Quiz thực chiến</span>
+            <span class="part-badge">Bài tập tương tác</span>
         </div>
 
         <div class="trainer-stats">
@@ -417,16 +413,14 @@
         </div>
 
         <div style="text-align: center; margin-bottom: 10px; font-size: 0.95rem;">
-            Tình huống: Bạn ở vị trí <b style="color:var(--accent-blue);" id="trainPos">BTN</b>, stack <b style="color:var(--accent-gold);" id="trainStack">SHORT (&lt;15BB)</b>.<br>
-            <span id="trainScenarioText" style="color:var(--text-dim); font-size:0.85rem;">Chưa ai vào pot, đến lượt bạn hành động.</span>
+            Tình huống: Bạn ở vị trí <b style="color:var(--accent-blue);" id="trainPos">BTN</b>, stack <b style="color:var(--accent-gold);" id="trainStack">20 BB</b>.<br>
+            <span id="trainScenarioText" style="color:var(--text-dim); font-size:0.85rem;">Chưa ai vào pot, đến lượt bạn mở cược.</span>
         </div>
 
-        <!-- 2 LÁ BÀI -->
         <div class="cards-display" id="cardsBox"></div>
 
-        <!-- NÚT CHỌN ĐÁP ÁN -->
         <div class="trainer-actions" id="trainerActions">
-            <button class="act-btn btn-act-shove" onclick="submitTrain('SHOVE')">SHOVE / RAISE</button>
+            <button class="act-btn btn-act-shove" onclick="submitTrain('SHOVE')">RAISE / SHOVE</button>
             <button class="act-btn btn-act-call" onclick="submitTrain('CALL')">CALL</button>
             <button class="act-btn btn-act-fold" onclick="submitTrain('FOLD')">FOLD</button>
         </div>
@@ -445,7 +439,6 @@
         { s: '♣', c: 'suit-c' }
     ];
 
-    // Tạo Ma trận 13x13
     const MATRIX = [];
     for (let r = 0; r < 13; r++) {
         MATRIX[r] = [];
@@ -456,7 +449,6 @@
         }
     }
 
-    // RANGE PARSER
     function parseRange(str) {
         const set = new Set();
         if (!str) return set;
@@ -492,88 +484,99 @@
     }
 
     // =========================================================================
-    // DỮ LIỆU ĐƯỢC PHÂN THEO 3 NHÓM STACK & TÌNH HUỐNG
+    // DỮ LIỆU ĐÚNG CHUẨN 3 MỐC 20BB, 40BB, 70BB (POKERCOACHING JONATHAN LITTLE)
     // =========================================================================
     const DATA = {
-        'SHORT': { // < 15 BB: Push / Fold
+        // -------------------------------------------------------------
+        // MỐC 1: 20 BB (SHORT STACK / RESHOVE ZONE)
+        // -------------------------------------------------------------
+        '20BB': {
             'RFI': {
-                'UTG': { shove: '88+, AJs+, AQo+', call: '', size: 'Shove All-in (100% Stack)', shape: 'Top 9% bài mạnh nhất có blocker A.', exploit: 'Không bao giờ min-raise/fold khi <15BB.' },
-                'MP':  { shove: '22+, A8s+, ATo+, KJs+, KQo', call: '', size: 'Shove All-in', shape: 'Top 16% bài, mở rộng ra các đôi nhỏ để cướp.', exploit: 'Mở rộng shove khi người ngồi sau là Nit.' },
-                'CO':  { shove: '22+, A2s+, A7o+, K9s+, KJo+, Q9s+, J9s+, T9s', call: '', size: 'Shove All-in', shape: 'Top 28% bài áp lực cực lớn lên BTN và 2 Blinds.', exploit: 'Nếu 2 Blind hay fold, shove tới 35%.' },
-                'BTN': { shove: '22+, Mọi Ax, K5s+, K8o+, Q8s+, QTo+, J8s+, T8s+, 98s', call: '', size: 'Shove All-in (~45%)', shape: 'Shove gần như mọi bài có lá cao hoặc suited.', exploit: 'Tận dụng Dead Money từ Blinds.' },
-                'SB':  { shove: '22+, Mọi Ax, Mọi Kx, Q6o+, J7o+, Mọi Suited', call: '', size: 'Shove All-in (~60%)', shape: 'Cướp mù khẩn cấp vs BB.', exploit: 'Nếu BB là Nit, Shove 100% bài!' },
-                'BB':  { shove: '', call: '', size: '---', shape: 'BB không RFI', exploit: 'Xem mục Đối Mặt Open.' }
-            },
-            'VS_OPEN': {
-                'UTG': { shove: '', call: '', size: '---', shape: 'Không ai open trước UTG', exploit: '---' },
-                'MP':  { shove: 'TT+, AKs, AKo', call: '', size: 'Shove 3-Bet All-in', shape: 'Chỉ đẩy bài quái vật vs UTG open.', exploit: 'Tuyệt đối KHÔNG Flat Call.' },
-                'CO':  { shove: '88+, AJs+, AQo+, KQs', call: '', size: 'Shove 3-Bet All-in', shape: 'Shove cách ly đối thủ MP.', exploit: 'Tận dụng Fold Equity.' },
-                'BTN': { shove: '77+, ATs+, AJo+, KQs', call: '', size: 'Shove All-in', shape: 'Vị trí thuận lợi để Shove Resteal.', exploit: 'Ép các bài trung bình của CO phải bỏ cuộc.' },
-                'SB':  { shove: '88+, AJs+, AQo+', call: '', size: 'Shove All-in', shape: 'Không bao giờ flat call ở SB.', exploit: 'Shove hoặc Fold!' },
-                'BB':  { shove: '66+, ATs+, AJo+, KQs', call: 'Connectors to (nếu min-raise)', size: 'Shove hoặc Call giá rẻ', shape: 'Defend chọn lọc.', exploit: 'Tận dụng pot odds nếu giá cực rẻ.' }
-            },
-            'BVB': {
-                'SB': { shove: '22+, Mọi Ax, K7s+, Q8s+, J8s+, A8o+, KTo+', call: '', size: 'Shove All-in vs BB', shape: 'Tấn công trực diện BB.', exploit: 'Micro BB fold rất nhiều khi bị SB shove.' },
-                'BB': { shove: '22+, A2s+, K7s+, Q8s+, A7o+, K9o+, QTo+', call: 'Phần còn lại', size: 'Shove vs SB Limp / Call vs SB Shove: 77+, ATs+, AJo+', shape: 'Bắt bài SB cướp mù.', exploit: 'Trừng phạt SB limp.' }
-            }
-        },
-        'MID': { // 15 - 35 BB: Resteal & Min-raise
-            'RFI': {
-                'UTG': { shove: '', raise: '77+, ATs+, AJo+, KQs', call: '', size: 'Min-raise 2.0x', shape: 'Open 14% rất cân bằng.', exploit: 'Bị 3-bet shove -> chỉ call TT+, AK.' },
-                'MP':  { shove: '', raise: '55+, A8s+, ATo+, KTs+, QJs, JTs', call: '', size: 'Min-raise 2.0x', shape: 'Open 18% bắt đầu thêm connectors.', exploit: 'Cẩn thận 3-bet từ Blinds.' },
-                'CO':  { shove: '', raise: '22+, A2s+, A8o+, K8s+, Q9s+, Suited Connectors', call: '', size: 'Min-raise 2.0x (~28%)', shape: 'Rất cơ động, sẵn sàng fold nếu bị shove.', exploit: 'Cướp blind hiệu quả cao.' },
-                'BTN': { shove: '', raise: '22+, A2s+, A5o+, K5s+, K9o+, Q8s+, Connectors', call: '', size: 'Min-raise 2.0x (~45%)', shape: 'Mở rộng tối đa dải bài có tính kết nối.', exploit: 'Chỉ call 3-bet shove với 99+, AQ+.' },
-                'SB':  { shove: 'A2s-A5s, 77-TT (Shove)', raise: 'JJ+, AK, K9s+, Q9s+ (Raise 2.2x)', call: '', size: 'Raise 2.2x hoặc 3-Bet Shove', shape: 'Polarized giữa Shove và Min-raise.', exploit: 'Tấn công BB liên tục.' },
-                'BB':  { shove: '', raise: '', call: '', size: '---', shape: '---', exploit: '---' }
+                'UTG': { shove: '', raise: '66+, ATs+, KTs+, QTs+, JTs, AJo+, KQo', call: '', size: 'Min-raise 2.0x', shape: 'Range hẹp (13.5%). Loại bỏ 22-55 vì không đủ odds hit set.', exploit: 'Nếu bị 3-bet shove -> chỉ call TT+, AK.' },
+                'MP':  { shove: '', raise: '55+, A8s+, K9s+, Q9s+, J9s+, T9s, 98s, ATo+, KJo+, QJo', call: '', size: 'Min-raise 2.0x', shape: 'Mở rộng dần sang broadway đồng chất.', exploit: 'Fold hầu hết nếu bị 3-bet shove từ Blinds.' },
+                'CO':  { shove: '', raise: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 98s, 87s, A8o+, KTo+, QTo+, JTo', call: '', size: 'Min-raise 2.0x (~28%)', shape: 'Áp lực cướp blind.', exploit: 'Chuẩn bị tinh thần đối mặt 3-bet resteal.' },
+                'BTN': { shove: '', raise: '22+, A2s+, K2s+, Q6s+, J7s+, T7s+, 97s+, 86s+, 76s, A2o+, K8o+, Q9o+, J9o+, T9o', call: '', size: 'Min-raise 2.0x (~45%)', shape: 'Open rộng cướp blind.', exploit: 'Chỉ call 3-bet shove với 99+, AQ+.' },
+                'SB':  { shove: '22-66, A2s-A5s, A8o-ATo', raise: '77+, ATs+, KJs+, AJo+ (Raise 2.2x)', call: '', size: 'Raise 2.2x hoặc Shove', shape: 'Polarized giữa Shove và Raise.', exploit: 'Không limp ở 20BB, tấn công thẳng vào BB.' },
+                'BB':  { shove: '', raise: '', call: '', size: '---', shape: 'BB không RFI', exploit: 'Xem tab Đối Mặt Open.' }
             },
             'VS_OPEN': {
                 'UTG': { shove: '', raise: '', call: '', size: '---', shape: '---', exploit: '---' },
-                'MP':  { shove: 'TT+, AKs, AKo, AQs', raise: 'JJ+, AK', call: '77-99, KQs', size: '3-Bet Shove hoặc Call', shape: 'Resteal Shove cực mạnh.', exploit: 'Trừng phạt các đối thủ open quá lỏng.' },
-                'CO':  { shove: '77-TT, AJs, A2s-A5s', raise: 'JJ+, AK', call: '22-66, Broadways', size: '3-Bet Shove hoặc Call', shape: 'A2s-A5s làm 3-bet shove bluff hoàn hảo.', exploit: 'Blocker A triệt tiêu bài của đối thủ.' },
-                'BTN': { shove: '88-TT, AJs, A5s', raise: 'JJ+, AK', call: '22-77, Suited Connectors', size: '3-Bet Shove / Call IP', shape: 'Tận dụng IP tối đa.', exploit: 'Flat call để float flop.' },
-                'SB':  { shove: '77-TT, AJs, A2s-A5s', raise: 'JJ+, AK (to 3.5x)', call: '', size: '3-Bet Shove hoặc Fold', shape: 'Tuyệt đối không Flat Call OOP!', exploit: 'Fold bài rác, Shove bài có blocker.' },
-                'BB':  { shove: '77-TT, AJs, A2s-A5s', raise: 'JJ+, AK', call: '22-66, Ax suited, Suited Connectors', size: 'Defend Call 1BB hoặc Shove', shape: 'Defend rộng do được giảm giá.', exploit: 'Check-raise flop.' }
+                'MP':  { shove: 'TT+, AKs, AKo', raise: '', call: '', size: '3-Bet Shove All-in', shape: 'Chỉ 3-bet Shove bài Premium vs UTG.', exploit: 'Tuyệt đối KHÔNG Flat Call với 20BB khi OOP.' },
+                'CO':  { shove: '88-TT, AJs, A5s, AQ+, AK', raise: '', call: '99-JJ (nếu stack còn tốt)', size: '3-Bet Shove', shape: 'Shove cách ly đối thủ MP.', exploit: 'Tận dụng blocker A của A5s.' },
+                'BTN': { shove: '77-TT, AJs, A2s-A5s, AQo+', raise: 'QQ+, AKs (Min 3-bet)', call: '22-66, Suited Broadway', size: '3-Bet Shove All-in', shape: 'Resteal Shove cực mạnh.', exploit: 'Khai thác tối đa vị trí BTN.' },
+                'SB':  { shove: '88-TT, AJs, A2s-A5s, AQo+', raise: 'JJ+, AK', call: '', size: '3-Bet Shove hoặc Fold', shape: 'Ở SB 20BB: TUYỆT ĐỐI KHÔNG CALL.', exploit: 'Call ở SB là rò rỉ chip lớn nhất.' },
+                'BB':  { shove: '77-TT, AJs, A2s-A5s, KQo', raise: 'JJ+, AK', call: '22-66, Ax suited, Suited Connectors', size: 'Defend Call hoặc Shove', shape: 'Defend chọn lọc các bài có odds ngon.', exploit: 'Check-shove flop khi dính top pair/combo draw.' }
             },
             'BVB': {
-                'SB': { shove: '88-TT, A2s-A5s', raise: 'JJ+, AK, K9s+', call: 'Các bài rác xem flop', size: 'Raise 2.5x hoặc Shove', shape: 'Ép BB vào thế khó.', exploit: 'C-bet nhỏ ở flop khô.' },
-                'BB': { shove: '77-TT, AJs, KQo', raise: 'Raise Iso 44% vs Limp', call: 'Call vs Raise', size: 'Raise trừng phạt SB limp', shape: 'Tận dụng vị trí IP.', exploit: 'Trừng phạt SB passive.' }
+                'SB': { shove: '22-66, A2s-A5s, K7s+, A8o+', raise: '77+, ATs+, KJs+, AQo+', call: '', size: 'Shove All-in vs BB', shape: 'Cướp mù dứt khoát.', exploit: 'BB thường over-fold khi bị shove 20BB.' },
+                'BB': { shove: '22-TT, A2s+, A7o+, K9o+', raise: 'JJ+, AK', call: 'Call vs Min-raise', size: 'Shove trừng phạt SB limp', shape: 'Tận dụng vị trí IP.', exploit: 'Trừng phạt lối chơi limp yếu đuối của SB.' }
             }
         },
-        'DEEP': { // > 35 BB: Implied Odds & Postflop (PokerCoaching Chuẩn)
+
+        // -------------------------------------------------------------
+        // MỐC 2: 40 BB (MEDIUM STACK / MAIN GAME STANDARD)
+        // -------------------------------------------------------------
+        '40BB': {
             'RFI': {
-                'UTG': { shove: '', raise: '22+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, 87s, ATo+, KJo+, QJo', call: '', size: 'Open 2.2x - 2.5x', shape: 'Set-mine 22+ cực kỳ giá trị khi deep.', exploit: 'Trúng Set là nhắm ăn trọn Stack.' },
-                'MP':  { shove: '', raise: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, Suited Connectors, A9o+, KTo+', call: '', size: 'Open 2.2x', shape: 'Đưa các bài có playability cao vào.', exploit: 'Build pot to postflop khi hit nut.' },
-                'CO':  { shove: '', raise: '22+, Mọi Suited Ax, K2s+, Broadways, Connectors 54s+', call: '', size: 'Open 2.3x', shape: 'Open ~36% bài.', exploit: 'Bet to 66-80% khi cầm bài mạnh.' },
-                'BTN': { shove: '', raise: '22+, Mọi Ax, Mọi Suited, K7o+, Q8o+, Connectors', call: '', size: 'Open 2.5x (>50%)', shape: 'Vị trí vua, khai thác tuyệt đối sau flop.', exploit: 'KHÔNG SLOWPLAY ở Micro!' },
-                'SB':  { shove: '', raise: '22+, A2s+, K8s+, Q9s+, A8o+', call: 'Limp các bài trung bình', size: 'Open 2.5x - 3.0x vs BB', shape: 'Tránh build pot to khi OOP.', exploit: 'Chỉ đánh bài mạnh khi out of position.' },
-                'BB':  { shove: '', raise: '', call: '', size: '---', shape: '---', exploit: '---' }
+                'UTG': { shove: '', raise: '44+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, 87s, ATo+, KJo+, QJo', call: '', size: 'Open 2.1x', shape: 'Bắt đầu đưa 44-55 vào set-mine.', exploit: 'C-bet 25-33% ở mặt flop khô (K-8-2).' },
+                'MP':  { shove: '', raise: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 87s, 76s, 65s, A9o+, KTo+, QTo+, JTo', call: '', size: 'Open 2.1x (~23%)', shape: 'Mở rộng tối đa dải connectors.', exploit: 'Fold các broadway yếu khi bị 3-bet.' },
+                'CO':  { shove: '', raise: '22+, A2s+, K2s+, Q5s+, J7s+, T7s+, 97s+, 86s+, 75s+, 65s, 54s, A5o+, K9o+, Q9o+, J9o+, T9o', call: '', size: 'Open 2.1x - 2.2x (~36%)', shape: 'Tấn công blind với tần suất cao.', exploit: 'Bet value 66% khi dính Top Pair Kicker to.' },
+                'BTN': { shove: '', raise: '22+, Mọi Ax, Mọi Suited, K7o+, Q8o+, J8o+, T8o+, 98o', call: '', size: 'Open 2.2x (>50%)', shape: 'Vị trí vua, khai thác trọn vẹn IP.', exploit: 'C-bet nhỏ liên tục ở vị trí BTN.' },
+                'SB':  { shove: '', raise: '22+, A2s+, K8s+, Q9s+, J9s+, A8o+, KTo+', call: 'Limp các bài trung bình', size: 'Raise 2.5x vs BB', shape: 'Chiến thuật hỗn hợp Raise / Limp.', exploit: 'Nếu BB là Nit, raise 100% cướp mù.' },
+                'BB':  { shove: '', raise: '', call: '', size: '---', shape: 'BB không RFI', exploit: 'Xem tab Đối Mặt Open.' }
             },
             'VS_OPEN': {
                 'UTG': { shove: '', raise: '', call: '', size: '---', shape: '---', exploit: '---' },
-                'MP':  { shove: '', raise: 'JJ+, AKs, AKo, A5s', call: '22-TT, AQs, KQs, Suited Connectors', size: '3-Bet 3x / Flat Call', shape: 'Set-mine và suited connectors.', exploit: 'Tận dụng Implied Odds ăn trọn stack.' },
-                'CO':  { shove: '', raise: 'TT+, AQ+, A4s-A5s', call: '22-99, Mọi Suited Ax, Connectors', size: '3-Bet 3x / Call IP', shape: 'Vị trí đè bẹp các vị trí trước.', exploit: 'Call xem flop rẻ để hit bài ẩn.' },
-                'BTN': { shove: '', raise: 'TT+, AQ+, A2s-A5s, K9s', call: '22-99, Suited Broadways, Connectors', size: '3-Bet 3x / Call IP rộng', shape: 'Flat call cực kỳ có lợi thế.', exploit: 'Outplay đối thủ ở Flop và Turn.' },
-                'SB':  { shove: '', raise: 'TT+, AQ+, KQs, A5s (Size 3.5x - 4x)', call: 'HẠN CHẾ FLAT CALL', size: '3-Bet to 4x hoặc Fold', shape: 'Triệt tiêu lợi thế của đối thủ.', exploit: 'Đừng call cố khi OOP.' },
-                'BB':  { shove: '', raise: 'JJ+, AKs, AKo, A2s-A5s', call: '22-TT, Mọi Ax, Mọi Suited, Connectors', size: 'Call giá rẻ / 3-Bet 4x', shape: 'Defend 55-65% ma trận.', exploit: 'Check-raise flop thuận lợi.' }
+                'MP':  { shove: '', raise: 'JJ+, AKs, AKo, A5s', call: '77-TT, AQs, KQs, QJs', size: '3-Bet 3x / Call IP', shape: 'Bắt đầu có 3-Bet Non-all-in (size 3x).', exploit: 'Fold các suited connectors nhỏ.' },
+                'CO':  { shove: '', raise: 'TT+, AQ+, A4s-A5s, KJs', call: '22-99, Suited Connectors, Broadways', size: '3-Bet 3x / Flat Call IP', shape: 'Flat call có lợi thế rất lớn.', exploit: 'Outplay đối thủ ở Flop khi có IP.' },
+                'BTN': { shove: '', raise: 'TT+, AQ+, A2s-A5s, K9s, T8s', call: '22-99, Mọi Suited Ax, KTs+, QTs+, Connectors', size: '3-Bet 3x / Call IP rộng', shape: 'Vị trí tốt nhất để Flat Call.', exploit: 'Float flop và bet cướp pot khi đối thủ check turn.' },
+                'SB':  { shove: '', raise: 'TT+, AQ+, KQs, A5s (Size 3.5x)', call: '22-66 (nếu pot multiway)', size: '3-Bet 3.5x hoặc Fold', shape: 'Tuyệt đối không Call bài rác khi OOP.', exploit: '3-Bet to để triệt tiêu lợi thế BTN.' },
+                'BB':  { shove: '', raise: 'JJ+, AKs, AKo, A2s-A5s, KJs', call: '22-TT, Mọi Ax suited, Connectors 54s+', size: 'Defend Call 55% / 3-Bet 3.5x', shape: 'Defend hơn 50% ma trận.', exploit: 'Check-raise flop texture ẩm (8-7-6).' }
             },
             'BVB': {
-                'SB': { shove: '', raise: '22+, A2s+, K7s+, Q8s+, A8o+', call: 'Limp bài trung bình', size: 'Raise 3x hoặc Limp/Call', shape: 'Đánh chắc chắn.', exploit: 'Nếu BB là Station, chờ bài to bet value.' },
-                'BB': { shove: '', raise: 'Raise Iso 44% vs SB Limp', call: 'Defend Call vs SB Raise', size: 'Raise to vs Limp / Call vs Raise', shape: 'Vị trí IP hoàn hảo.', exploit: 'Cướp pot ngay Flop nếu SB check.' }
+                'SB': { shove: '', raise: '22+, A2s+, K7s+, Q8s+, A8o+, KTo+', call: 'Limp các bài còn lại', size: 'Raise 2.5x hoặc Limp', shape: 'Tấn công có chọn lọc.', exploit: 'C-bet 1/3 pot ở flop có lá Ace.' },
+                'BB': { shove: '', raise: 'Raise Iso 44% vs SB Limp', call: 'Call vs SB Raise (54%)', size: 'Raise to vs Limp / Call vs Raise', shape: 'Tận dụng IP đè bẹp SB.', exploit: 'Check-back float và cướp pot ở turn.' }
+            }
+        },
+
+        // -------------------------------------------------------------
+        // MỐC 3: 70 BB (DEEP STACK / EARLY STAGE)
+        // -------------------------------------------------------------
+        '70BB': {
+            'RFI': {
+                'UTG': { shove: '', raise: '22+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, 87s, 76s, ATo+, KJo+, QJo', call: '', size: 'Open 2.3x - 2.5x', shape: 'Set-mine toàn bộ 22+ cực kỳ giá trị.', exploit: 'Hit Set là nhắm ăn trọn toàn bộ Stack 70BB.' },
+                'MP':  { shove: '', raise: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 76s, 65s, 54s, A9o+, KTo+, QTo+, JTo', call: '', size: 'Open 2.3x', shape: 'Mở dải Suited Connectors nhỏ (54s).', exploit: 'Tận dụng Implied Odds tối đa.' },
+                'CO':  { shove: '', raise: '22+, Mọi Suited Ax, K2s+, Broadways, Connectors 43s+', call: '', size: 'Open 2.4x (~38%)', shape: 'Mở rộng tối đa range cướp.', exploit: 'Bet to 66-80% khi cầm Set/Straight/Flush.' },
+                'BTN': { shove: '', raise: '22+, Mọi Ax, Mọi Suited, Mọi Kx, Broadways, Connectors', call: '', size: 'Open 2.5x (>55%)', shape: 'Bùng nổ toàn bộ nửa trên ma trận.', exploit: 'KHÔNG SLOWPLAY bài mạnh ở Micro!' },
+                'SB':  { shove: '', raise: '22+, A2s+, K8s+, Q9s+, A8o+, KTo+', call: 'Limp các bài tiềm năng', size: 'Raise 3.0x vs BB', shape: 'Tránh build pot to khi OOP nếu không có bài nut.', exploit: 'Đánh chắc chắn khi out of position.' },
+                'BB':  { shove: '', raise: '', call: '', size: '---', shape: 'BB không RFI', exploit: 'Xem tab Đối Mặt Open.' }
+            },
+            'VS_OPEN': {
+                'UTG': { shove: '', raise: '', call: '', size: '---', shape: '---', exploit: '---' },
+                'MP':  { shove: '', raise: 'QQ+, AKs, AKo, A5s', call: '22-JJ, AQs, KQs, QJs, Suited Connectors', size: '3-Bet 3.2x / Flat Call', shape: 'Set-mining cực mạnh.', exploit: 'Tận dụng sai lầm đối thủ không chịu bỏ overpair.' },
+                'CO':  { shove: '', raise: 'TT+, AQ+, A4s-A5s', call: '22-99, Mọi Suited Ax, Connectors', size: '3-Bet 3.2x / Call IP', shape: 'Flat Call rất thoải mái.', exploit: 'Khai thác tối đa sau flop.' },
+                'BTN': { shove: '', raise: 'JJ+, AKs, AKo, A2s-A5s', call: '22-TT, Mọi Suited, Mọi Connectors, Broadways', size: '3-Bet 3.2x / Call IP cực rộng', shape: 'Call hầu như mọi bài có liên kết.', exploit: 'Outplay đối thủ khi họ c-bet xong check turn.' },
+                'SB':  { shove: '', raise: 'TT+, AQ+, KQs, A5s (Size 4x)', call: 'HẠN CHẾ FLAT CALL', size: '3-Bet to 4x hoặc Fold', shape: 'Size 3-bet phải to (4x) khi OOP.', exploit: 'Đừng call cố các bài rác khi mất vị trí.' },
+                'BB':  { shove: '', raise: 'JJ+, AKs, AKo, A2s-A5s', call: '22-TT, Mọi Ax, Mọi Suited, Connectors', size: 'Call giá rẻ / 3-Bet 4x', shape: 'Defend 60-65% ma trận.', exploit: 'Ăn trọn stack khi hit Two Pair/Set ẩn.' }
+            },
+            'BVB': {
+                'SB': { shove: '', raise: '22+, A2s+, K7s+, Q8s+, A8o+', call: 'Limp các bài trung bình', size: 'Raise 3x hoặc Limp', shape: 'Chơi bài có tính biến hóa.', exploit: 'Nếu BB là Station, chờ bài to bet value.' },
+                'BB': { shove: '', raise: 'Raise Iso 44% vs SB Limp', call: 'Defend Call vs SB Raise', size: 'Raise to vs Limp / Call vs Raise', shape: 'Vị trí tuyệt đối.', exploit: 'Check-raise flop trừng phạt SB c-bet lỏng.' }
             }
         }
     };
 
-    let curStack = 'SHORT';
+    let curStack = '20BB';
     let curAction = 'RFI';
     let curPos = 'UTG';
 
-    function setStackTier(stack, btn) {
+    function setStackDepth(stack, btn) {
         curStack = stack;
         const sibs = btn.parentNode.children;
         for (let s of sibs) s.className = 'opt-btn';
-        if (stack === 'SHORT') btn.className = 'opt-btn active-stack-short';
-        else if (stack === 'MID') btn.className = 'opt-btn active-stack-mid';
-        else btn.className = 'opt-btn active-stack-deep';
+        if (stack === '20BB') btn.className = 'opt-btn active-20bb';
+        else if (stack === '40BB') btn.className = 'opt-btn active-40bb';
+        else btn.className = 'opt-btn active-70bb';
 
         updateView();
     }
@@ -599,7 +602,7 @@
     function updateView() {
         document.getElementById('currentSelectionTag').innerText = `${curStack} | ${curPos} | ${curAction}`;
 
-        let item = DATA[curStack][curAction][curPos] || { shove: '', raise: '', call: '', size: 'Không áp dụng', shape: 'Không có hành động', exploit: '---' };
+        let item = DATA[curStack][curAction][curPos] || { shove: '', raise: '', call: '', size: 'Không áp dụng', shape: '---', exploit: '---' };
 
         document.getElementById('sizingText').innerText = item.size;
         document.getElementById('rangeShapeText').innerText = item.shape;
@@ -633,9 +636,7 @@
         }
     }
 
-    // =========================================================================
-    // PHẦN 4: LOGIC LUYỆN TẬP PHẢN XẠ THEO STACK (TRAINER)
-    // =========================================================================
+    // TRAINER
     let tScore = 0, tTotal = 0, tStreak = 0;
     let curQuiz = null;
 
@@ -644,7 +645,7 @@
         document.getElementById('btnNext').style.display = 'none';
         document.getElementById('trainerActions').style.display = 'grid';
 
-        const stacks = ['SHORT', 'MID', 'DEEP'];
+        const stacks = ['20BB', '40BB', '70BB'];
         const actions = ['RFI', 'VS_OPEN'];
         const positions = ['UTG', 'MP', 'CO', 'BTN', 'SB', 'BB'];
 
@@ -654,10 +655,9 @@
 
         const item = DATA[qStack][qAct][qPos];
         if (!item || (!item.shove && !item.raise && !item.call)) {
-            return generateTrainerQuestion(); // thử lại
+            return generateTrainerQuestion();
         }
 
-        // Tạo 2 lá bài ngẫu nhiên
         const r1 = Math.floor(Math.random() * 13), r2 = Math.floor(Math.random() * 13);
         let s1 = Math.floor(Math.random() * 4), s2 = Math.floor(Math.random() * 4);
         if (r1 === r2 && s1 === s2) s2 = (s1 + 1) % 4;
@@ -666,7 +666,6 @@
         const rankLow = r1 <= r2 ? RANKS[r2] : RANKS[r1];
         let handName = (r1 === r2) ? rankHigh + rankLow : (s1 === s2 ? rankHigh + rankLow + 's' : rankHigh + rankLow + 'o');
 
-        // Tìm đáp án
         const shoveSet = parseRange(item.shove);
         const raiseSet = parseRange(item.raise);
         const callSet = parseRange(item.call);
@@ -686,9 +685,8 @@
             tip: item.exploit
         };
 
-        // Render UI Trainer
         document.getElementById('trainPos').innerText = qPos;
-        document.getElementById('trainStack').innerText = qStack === 'SHORT' ? 'SHORT (<15BB)' : (qStack === 'MID' ? 'MEDIUM (15-35BB)' : 'DEEP (>35BB)');
+        document.getElementById('trainStack').innerText = qStack;
         document.getElementById('trainScenarioText').innerText = qAct === 'RFI' ? 'Chưa ai vào pot, đến lượt bạn mở cược.' : 'Đối thủ ở vị trí trước vừa Open Raise.';
 
         const cardsBox = document.getElementById('cardsBox');
@@ -715,11 +713,11 @@
             tScore++;
             tStreak++;
             fb.className = 'feedback-box fb-correct';
-            fb.innerHTML = `<b>🎉 CHÍNH XÁC!</b> Với bài <b>${curQuiz.hand}</b> ở stack ${curQuiz.stack} (${curQuiz.pos}), hành động chuẩn là <b>${curQuiz.ans}</b>.<br><span style="color:#cbd5e1; font-size:0.85rem;">Mẹo: ${curQuiz.tip}</span>`;
+            fb.innerHTML = `<b>🎉 CHÍNH XÁC!</b> Với bài <b>${curQuiz.hand}</b> ở mốc ${curQuiz.stack} (${curQuiz.pos}), hành động chuẩn là <b>${curQuiz.ans}</b>.<br><span style="color:#cbd5e1; font-size:0.85rem;">Mẹo: ${curQuiz.tip}</span>`;
         } else {
             tStreak = 0;
             fb.className = 'feedback-box fb-wrong';
-            fb.innerHTML = `<b>❌ CHƯA ĐÚNG!</b> Bạn chọn <i>${choice}</i>, nhưng với bài <b>${curQuiz.hand}</b> ở stack ${curQuiz.stack} (${curQuiz.pos}) chuẩn PokerCoaching là <b>${curQuiz.ans}</b>.<br><span style="color:#cbd5e1; font-size:0.85rem;">Mẹo: ${curQuiz.tip}</span>`;
+            fb.innerHTML = `<b>❌ CHƯA ĐÚNG!</b> Bạn chọn <i>${choice}</i>, nhưng với bài <b>${curQuiz.hand}</b> ở mốc ${curQuiz.stack} (${curQuiz.pos}) chuẩn PokerCoaching là <b>${curQuiz.ans}</b>.<br><span style="color:#cbd5e1; font-size:0.85rem;">Mẹo: ${curQuiz.tip}</span>`;
         }
 
         document.getElementById('statScore').innerText = `${tScore}/${tTotal}`;
@@ -731,7 +729,6 @@
         document.getElementById('btnNext').style.display = 'block';
     }
 
-    // Khởi động
     updateView();
     generateTrainerQuestion();
 </script>
