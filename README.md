@@ -27,25 +27,4 @@ Trợ lý tra cứu nhanh Ma trận Preflop (Range) và Chiến thuật Khai th�
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Sử Dụng
 
-Ứng dụng là một trang web đơn lẻ (**Single Page Application - SPA**), không cần cài đặt thêm thư viện hay server backend nào.
-
-### 1. Sử dụng trực tiếp trên máy tính (Offline)
-- Tải về hoặc mở file `index.html` bằng bất kỳ trình duyệt nào (Chrome, Edge, Safari, Firefox).
-
-### 2. Triển khai online qua GitHub Pages (Khuyên dùng)
-1. Fork hoặc Push mã nguồn lên Repository cá nhân trên GitHub.
-2. Vào **Settings** $\rightarrow$ Chọn mục **Pages** ở thanh menu bên trái.
-3. Tại phần **Build and deployment**:
-   - **Source:** `Deploy from a branch`
-   - **Branch:** chọn `main` / folder `/ (root)` $\rightarrow$ Nhấn **Save**.
-4. Truy cập đường link được tạo để sử dụng mọi lúc trên điện thoại hoặc máy tính.
-
----
-
-## 🎯 Cấu Trúc Thư Mục
-
-```text
-├── index.html        # Giao diện chính và toàn bộ logic xử lý
-└── README.md         # Tài liệu hướng dẫn sử dụng
