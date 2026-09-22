@@ -3,172 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micro MTT 8-Max Matrix Assistant</title>
+    <title>PokerCoaching Preflop Master & Trainer</title>
     <style>
         :root {
-            --bg-color: #0f1115;
-            --card-bg: #181b22;
-            --cell-bg: #212631;
-            --cell-fold: #1b1f27;
-            --cell-fold-text: #4a5568;
-            --accent-green: #00e676;
-            --accent-gold: #ffd700;
-            --accent-blue: #29b6f6;
-            --accent-red: #ff5252;
-            --accent-orange: #ff9100;
-            --text-color: #e2e8f0;
-            --border-color: #2d3748;
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --cell-fold: #1e2530;
+            --cell-fold-text: #475569;
+            --accent-green: #10b981;
+            --accent-gold: #f59e0b;
+            --accent-blue: #38bdf8;
+            --accent-red: #ef4444;
+            --accent-purple: #a855f7;
+            --text-color: #f1f5f9;
+            --text-dim: #94a3b8;
+            --border-color: #30363d;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
             padding: 12px;
-            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
         }
 
         .container {
-            max-width: 780px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 820px;
         }
 
+        /* HEADER & TABS */
         header {
             text-align: center;
             margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
         }
 
         h1 {
             color: var(--accent-gold);
-            font-size: 1.35rem;
-            margin: 0 0 4px 0;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
         .subtitle {
-            color: #94a3b8;
+            color: var(--text-dim);
             font-size: 0.8rem;
+            margin-bottom: 12px;
         }
 
+        .mode-switch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .switch-btn {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .switch-btn.active {
+            background-color: #1e293b;
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+        }
+
+        /* NÚT CHỌN MENU */
         .section-title {
             font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             color: var(--accent-blue);
             margin: 10px 0 6px 0;
             font-weight: 600;
         }
 
         .btn-group {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
+            flex-wrap: wrap;
             gap: 6px;
             margin-bottom: 10px;
-        }
-
-        .btn-group-scenarios {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .btn-group-pos {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (min-width: 520px) {
-            .btn-group-pos {
-                grid-template-columns: repeat(8, 1fr);
-            }
         }
 
         button.opt-btn {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            padding: 8px 4px;
+            padding: 8px 12px;
             border-radius: 6px;
             font-weight: 600;
             font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.15s ease;
+            flex: 1;
+            min-width: 70px;
+            text-align: center;
         }
 
-        button.opt-btn:hover {
-            border-color: var(--accent-blue);
-        }
+        button.opt-btn:hover { border-color: var(--accent-blue); }
 
         button.opt-btn.active {
             background-color: var(--accent-blue);
             color: #000;
             border-color: var(--accent-blue);
-            box-shadow: 0 0 8px rgba(41, 182, 246, 0.4);
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
         }
 
-        button.opt-btn.scenario-btn.active {
-            background-color: var(--accent-gold);
-            color: #000;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
-        }
-
-        /* KHUNG CHỨA MA TRẬN 13x13 */
-        .matrix-wrapper {
+        /* GIAO DIỆN TRA CỨU MA TRẬN */
+        .matrix-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 12px;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .matrix-header {
+        .matrix-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .mode-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        .badge-push { background-color: var(--accent-red); color: #fff; }
-        .badge-resteal { background-color: var(--accent-orange); color: #000; }
-        .badge-main { background-color: var(--accent-green); color: #000; }
-        .badge-deep { background-color: var(--accent-blue); color: #000; }
-
-        /* CHÚ THÍCH MÀU (LEGEND) */
         .legend-bar {
             display: flex;
             gap: 12px;
             font-size: 0.75rem;
             font-weight: 600;
             margin-bottom: 10px;
-            background: #11141a;
+            background: #0f141c;
             padding: 6px 10px;
             border-radius: 6px;
-            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .legend-box {
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-box { width: 12px; height: 12px; border-radius: 2px; }
 
         .poker-grid {
             display: grid;
@@ -194,387 +183,518 @@
         .poker-cell:hover {
             transform: scale(1.15);
             z-index: 10;
-            box-shadow: 0 0 6px rgba(255,255,255,0.8);
+            box-shadow: 0 0 8px #fff;
         }
 
-        /* MÀU SẮC ACTION TRÊN MA TRẬN */
-        .cell-raise { background-color: #ff5252; color: #fff; }
-        .cell-3bet  { background-color: #ff9100; color: #000; }
-        .cell-call  { background-color: #00e676; color: #000; }
-        .cell-fold  { background-color: var(--cell-fold); color: var(--cell-fold-text); border: 1px solid rgba(255,255,255,0.03); }
+        .cell-raise { background-color: var(--accent-red); color: #fff; }
+        .cell-call  { background-color: var(--accent-green); color: #000; }
+        .cell-allin { background-color: var(--accent-purple); color: #fff; }
+        .cell-limp  { background-color: var(--accent-gold); color: #000; }
+        .cell-fold  { background-color: var(--cell-fold); color: var(--cell-fold-text); }
 
-        /* PHẦN GHI CHÚ BÊN DƯỚI */
-        .info-panel {
+        .info-box {
             margin-top: 12px;
-            background: #12151b;
+            background: #0f141c;
             padding: 10px 12px;
             border-radius: 6px;
             font-size: 0.85rem;
             line-height: 1.45;
+            border-left: 3px solid var(--accent-gold);
         }
 
-        .info-panel b { color: var(--accent-gold); }
-
-        /* Notes đối thủ */
-        .notes-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 15px;
+        /* GIAO DIỆN TRAINER LUYỆN TẬP */
+        .trainer-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        @media (max-width: 500px) {
-            .notes-grid { grid-template-columns: 1fr; }
+        .trainer-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #0f141c;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
-        .note-card {
-            padding: 8px 10px;
+        .stat-val { color: var(--accent-gold); font-size: 1.1rem; display: block; }
+
+        .scenario-box {
+            background: #1e293b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .scenario-pos {
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        /* HIỂN THỊ 2 LÁ BÀI TRỰC QUAN */
+        .cards-display {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .poker-card {
+            width: 75px;
+            height: 105px;
+            background: #fff;
             border-radius: 6px;
-            font-size: 0.78rem;
-            line-height: 1.35;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 6px 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            user-select: none;
         }
 
-        .note-green { background-color: #1b382b; border: 1px solid var(--accent-green); }
-        .note-blue { background-color: #173242; border: 1px solid var(--accent-blue); }
-        .note-red { background-color: #3d1c1c; border: 1px solid var(--accent-red); }
-        .note-yellow { background-color: #3d351c; border: 1px solid var(--accent-gold); }
+        .card-top { font-size: 1.2rem; font-weight: bold; text-align: left; }
+        .card-center { font-size: 2rem; text-align: center; line-height: 1; }
+        .card-bottom { font-size: 1.2rem; font-weight: bold; text-align: right; transform: rotate(180deg); }
+
+        .suit-s, .suit-c { color: #0f172a; } /* Bích & Chuồn: Đen */
+        .suit-h, .suit-d { color: #dc2626; } /* Cơ & Rô: Đỏ */
+
+        .trainer-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .act-btn {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .act-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .act-btn:active { transform: translateY(0); }
+
+        .btn-act-raise { background-color: var(--accent-red); color: #fff; }
+        .btn-act-call  { background-color: var(--accent-green); color: #000; }
+        .btn-act-fold  { background-color: #475569; color: #fff; }
+
+        .feedback-box {
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .feedback-correct { background-color: rgba(16, 185, 129, 0.2); border: 1px solid var(--accent-green); color: #34d399; }
+        .feedback-wrong   { background-color: rgba(239, 68, 68, 0.2); border: 1px solid var(--accent-red); color: #f87171; }
+
+        .btn-next {
+            background-color: var(--accent-blue);
+            color: #000;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>♠️ MICRO MTT 8-MAX MATRIX ASSISTANT</h1>
-        <div class="subtitle">Ma Trận Trực Quan 13x13 Học Hình Dáng Range (GTO / Exploit Style)</div>
+        <h1>♠️ POKERCOACHING PREFLOP MASTER</h1>
+        <div class="subtitle">Blueprint Jonathan Little 8-Max • Tra Cứu & Phòng Luyện Tập Phản Xạ</div>
+        
+        <!-- NÚT CHUYỂN ĐỔI CHẾ ĐỘ -->
+        <div class="mode-switch">
+            <button class="switch-btn active" id="tabViewerBtn" onclick="switchAppMode('VIEWER')">📖 TRA CỨU CHARTS</button>
+            <button class="switch-btn" id="tabTrainerBtn" onclick="switchAppMode('TRAINER')">🎯 PHÒNG LUYỆN TẬP</button>
+        </div>
     </header>
 
-    <!-- 1. CHỌN STACK -->
-    <div class="section-title">1. Độ Sâu Stack (Big Blinds)</div>
-    <div class="btn-group">
-        <button class="opt-btn active" onclick="setStack('<12', this)">&lt; 12 BB</button>
-        <button class="opt-btn" onclick="setStack('12-25', this)">12 - 25 BB</button>
-        <button class="opt-btn" onclick="setStack('25-50', this)">25 - 50 BB</button>
-        <button class="opt-btn" onclick="setStack('>50', this)">&gt; 50 BB</button>
+    <!-- ============================================== -->
+    <!-- VIEW 1: TRA CỨU BẢNG MA TRẬN 13x13             -->
+    <!-- ============================================== -->
+    <div id="viewModeViewer">
+        <div class="section-title">1. Chọn Nhóm Tình Huống (PokerCoaching)</div>
+        <div class="btn-group" id="catGroup">
+            <button class="opt-btn active" onclick="setCategory('RFI', this)">1. Raise First-In (RFI)</button>
+            <button class="opt-btn" onclick="setCategory('VS_UTG', this)">2. Facing vs UTG</button>
+            <button class="opt-btn" onclick="setCategory('VS_MP', this)">3. Facing vs MP (LJ/HJ)</button>
+            <button class="opt-btn" onclick="setCategory('VS_LP', this)">4. Facing vs LP (CO/BTN)</button>
+            <button class="opt-btn" onclick="setCategory('BVB', this)">5. Blind vs Blind</button>
+        </div>
+
+        <div class="section-title">2. Chọn Kịch Bản / Vị Trí Cụ Thể</div>
+        <div class="btn-group" id="subGroup">
+            <!-- Dynamic Buttons -->
+        </div>
+
+        <div class="matrix-card">
+            <div class="matrix-meta">
+                <span id="chartTitle" style="font-weight: bold; color: var(--accent-gold); font-size: 0.95rem;">UTG RFI</span>
+                <span id="chartStats" style="color: var(--text-dim); font-size: 0.82rem;">Raise: 15.7%</span>
+            </div>
+
+            <div class="legend-bar" id="legendBar">
+                <div class="legend-item"><div class="legend-box" style="background:var(--accent-red)"></div> 🟥 Raise / 3-Bet</div>
+                <div class="legend-item"><div class="legend-box" style="background:var(--accent-green)"></div> 🟩 Flat Call</div>
+                <div class="legend-item"><div class="legend-box" style="background:var(--cell-fold); border: 1px solid #475569;"></div> ⬛ Fold</div>
+            </div>
+
+            <div class="poker-grid" id="pokerGrid"></div>
+
+            <div class="info-box" id="chartExplanation">
+                <!-- Giải thích tư duy -->
+            </div>
+        </div>
     </div>
 
-    <!-- 2. CHỌN TÌNH HUỐNG -->
-    <div class="section-title">2. Tình Huống Preflop</div>
-    <div class="btn-group btn-group-scenarios">
-        <button class="opt-btn scenario-btn active" onclick="setScenario('OPEN', this)">🟢 Open (RFI)</button>
-        <button class="opt-btn scenario-btn" onclick="setScenario('VS_OPEN', this)">🟠 Vs Open Raise</button>
-        <button class="opt-btn scenario-btn" onclick="setScenario('VS_3BET', this)">🔴 Vs Bị 3-Bet</button>
-    </div>
+    <!-- ============================================== -->
+    <!-- VIEW 2: PHÒNG LUYỆN TẬP PHẢN XẠ (TRAINER)       -->
+    <!-- ============================================== -->
+    <div id="viewModeTrainer" style="display: none;">
+        <div class="trainer-card">
+            <div class="trainer-stats">
+                <div><span class="stat-val" id="statScore">0/0</span>Số câu đúng</div>
+                <div><span class="stat-val" id="statAccuracy">0%</span>Độ chính xác</div>
+                <div><span class="stat-val" id="statStreak">0</span>Chuỗi thắng 🔥</div>
+            </div>
 
-    <!-- 3. CHỌN VỊ TRÍ CỦA BẠN -->
-    <div class="section-title">3. Vị Trí Của Bạn (Hero Position)</div>
-    <div class="btn-group btn-group-pos">
-        <button class="opt-btn active" onclick="setPos('UTG', this)">UTG</button>
-        <button class="opt-btn" onclick="setPos('UTG1', this)">UTG+1</button>
-        <button class="opt-btn" onclick="setPos('MP', this)">MP</button>
-        <button class="opt-btn" onclick="setPos('HJ', this)">HJ</button>
-        <button class="opt-btn" onclick="setPos('CO', this)">CO</button>
-        <button class="opt-btn" onclick="setPos('BTN', this)">BTN</button>
-        <button class="opt-btn" onclick="setPos('SB', this)">SB</button>
-        <button class="opt-btn" onclick="setPos('BB', this)">BB</button>
-    </div>
+            <div class="scenario-box">
+                Tình huống: Bạn ở vị trí <span class="scenario-pos" id="trainPos">BTN</span>.<br>
+                <span id="trainContext" style="color: #cbd5e1; font-size: 0.9rem;">Đối thủ ở UTG vừa Open Raise 2.2BB. Chưa ai vào pot.</span>
+            </div>
 
-    <!-- 4. MA TRẬN TRỰC QUAN 13x13 -->
-    <div class="matrix-wrapper">
-        <div class="matrix-header">
-            <span id="modeBadge" class="mode-badge badge-push">PUSH / FOLD</span>
-            <span id="posStackInfo" style="font-weight: bold; color: var(--accent-gold); font-size: 0.9rem;">UTG | &lt; 12 BB</span>
-        </div>
+            <div class="cards-display" id="cardsBox">
+                <!-- 2 Lá bài SVG / HTML -->
+            </div>
 
-        <!-- BẢNG MÀU CHÚ THÍCH -->
-        <div class="legend-bar" id="legendBar">
-            <!-- Dynamic Legend -->
-        </div>
+            <div class="trainer-actions" id="trainerActions">
+                <button class="act-btn btn-act-raise" onclick="submitTrainAnswer('RAISE')">RAISE / 3-BET</button>
+                <button class="act-btn btn-act-call" onclick="submitTrainAnswer('CALL')">CALL</button>
+                <button class="act-btn btn-act-fold" onclick="submitTrainAnswer('FOLD')">FOLD</button>
+            </div>
 
-        <!-- LƯỚI MA TRẬN 13x13 -->
-        <div class="poker-grid" id="pokerGrid"></div>
-
-        <!-- THÔNG TIN CHI TIẾT & SIZING -->
-        <div class="info-panel" id="infoPanel"></div>
-    </div>
-
-    <!-- 5. NOTE EXPLOIT MÀU ĐỐI THỦ -->
-    <div class="section-title">4. Nhắc Nhở Exploit Màu Đối Thủ Micro</div>
-    <div class="notes-grid">
-        <div class="note-card note-green">
-            <b style="color: var(--accent-green);">🟢 CALLING STATION:</b> Value Bet to (66-80%), KHÔNG Bluff River, KHÔNG Slowplay bài nut.
-        </div>
-        <div class="note-card note-blue">
-            <b style="color: var(--accent-blue);">🔵 NIT / SỢ CHẾT:</b> Steal Blind liên tục, C-bet nhỏ (25-33%), Fold ngay khi họ 3-bet/Raise.
-        </div>
-        <div class="note-card note-red">
-            <b style="color: var(--accent-red);">🔴 MANIAC:</b> Check để bẫy (Induce Bluff), Call rộng hơn với Top/Middle Pair, không Bluff lại họ.
-        </div>
-        <div class="note-card note-yellow">
-            <b style="color: var(--accent-gold);">🟡 REGULAR:</b> Đánh đúng Blueprint, tận dụng vị trí IP sau flop, tránh pot to khi OOP.
+            <div class="feedback-box" id="feedbackBox"></div>
+            <button class="btn-next" id="btnNext" onclick="nextTrainerQuestion()">CÂU TIẾP THEO ➔</button>
         </div>
     </div>
 </div>
 
 <script>
     const RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
-    
-    // TẠO MA TRẬN 13x13 ĐẦY ĐỦ 169 COMBOS
-    const MATRIX_HANDS = [];
+    const SUITS = [
+        { name: 's', symbol: '♠', class: 'suit-s' },
+        { name: 'h', symbol: '♥', class: 'suit-h' },
+        { name: 'd', symbol: '♦', class: 'suit-d' },
+        { name: 'c', symbol: '♣', class: 'suit-c' }
+    ];
+
+    // Tạo Ma trận 13x13 (169 Hands)
+    const MATRIX = [];
     for (let r = 0; r < 13; r++) {
-        MATRIX_HANDS[r] = [];
+        MATRIX[r] = [];
         for (let c = 0; c < 13; c++) {
-            if (r === c) {
-                MATRIX_HANDS[r][c] = RANKS[r] + RANKS[c]; // Đôi (AA, KK, ...)
-            } else if (r < c) {
-                MATRIX_HANDS[r][c] = RANKS[r] + RANKS[c] + 's'; // Suited (AKs, A5s, ...)
-            } else {
-                MATRIX_HANDS[r][c] = RANKS[c] + RANKS[r] + 'o'; // Offsuit (AKo, KJo, ...)
-            }
+            if (r === c) MATRIX[r][c] = RANKS[r] + RANKS[c];
+            else if (r < c) MATRIX[r][c] = RANKS[r] + RANKS[c] + 's';
+            else MATRIX[r][c] = RANKS[c] + RANKS[r] + 'o';
         }
     }
 
-    let currentStack = '<12';
-    let currentScenario = 'OPEN';
-    let currentPos = 'UTG';
-
-    // BỘ PHÂN TÍCH CHUYỂN DẢI RANGE THÀNH SET BÀI
-    function expandRange(pattern) {
+    // RANGE EXPANDER FUNCTION
+    function expandRange(str) {
         const set = new Set();
-        if (!pattern || pattern.includes('---')) return set;
+        if (!str) return set;
+        const tokens = str.split(',').map(s => s.trim());
+        const rIdx = (ch) => RANKS.indexOf(ch);
 
-        const parts = pattern.split(',').map(s => s.trim());
-        const rankIdx = (ch) => RANKS.indexOf(ch);
-
-        parts.forEach(p => {
-            if (p === 'Mọi Ax') {
-                for (let i = 1; i < 13; i++) {
-                    set.add('A' + RANKS[i] + 's');
-                    set.add('A' + RANKS[i] + 'o');
-                }
-            } else if (p === 'Mọi Kx') {
-                for (let i = 2; i < 13; i++) {
-                    set.add('K' + RANKS[i] + 's');
-                    set.add('K' + RANKS[i] + 'o');
-                }
-            } else if (p === 'Mọi Suited') {
-                for (let r = 0; r < 13; r++) {
-                    for (let c = r + 1; c < 13; c++) set.add(RANKS[r] + RANKS[c] + 's');
-                }
-            } else if (p === 'Suited Connectors') {
-                ['AKs','KQs','QJs','JTs','T9s','98s','87s','76s','65s','54s'].forEach(h => set.add(h));
-            } else if (p.endsWith('+')) {
-                const base = p.slice(0, -1);
+        tokens.forEach(t => {
+            if (t.endsWith('+')) {
+                const base = t.slice(0, -1);
                 if (base.length === 2 && base[0] === base[1]) {
-                    // Pocket pair: 88+ -> 88, 99, TT, JJ, QQ, KK, AA
-                    const idx = rankIdx(base[0]);
+                    const idx = rIdx(base[0]);
                     for (let i = idx; i >= 0; i--) set.add(RANKS[i] + RANKS[i]);
                 } else if (base.endsWith('s')) {
-                    const r1 = rankIdx(base[0]), r2 = rankIdx(base[1]);
+                    const r1 = rIdx(base[0]), r2 = rIdx(base[1]);
                     for (let i = r2; i > r1; i--) set.add(base[0] + RANKS[i] + 's');
                 } else if (base.endsWith('o')) {
-                    const r1 = rankIdx(base[0]), r2 = rankIdx(base[1]);
+                    const r1 = rIdx(base[0]), r2 = rIdx(base[1]);
                     for (let i = r2; i > r1; i--) set.add(base[0] + RANKS[i] + 'o');
                 }
-            } else if (p.includes('-')) {
-                const [start, end] = p.split('-');
-                if (start.endsWith('s') && end.endsWith('s')) {
-                    const r1 = rankIdx(start[0]), s2 = rankIdx(start[1]), e2 = rankIdx(end[1]);
-                    const min = Math.min(s2, e2), max = Math.max(s2, e2);
-                    for (let i = min; i <= max; i++) set.add(start[0] + RANKS[i] + 's');
-                } else if (start.length === 2 && start[0] === start[1]) {
-                    const s = rankIdx(start[0]), e = rankIdx(end[0]);
-                    const min = Math.min(s, e), max = Math.max(s, e);
-                    for (let i = min; i <= max; i++) set.add(RANKS[i] + RANKS[i]);
+            } else if (t.includes('-')) {
+                const [s, e] = t.split('-');
+                if (s.endsWith('s') && e.endsWith('s')) {
+                    const r1 = rIdx(s[0]), s2 = rIdx(s[1]), e2 = rIdx(e[1]);
+                    for (let i = Math.min(s2,e2); i <= Math.max(s2,e2); i++) set.add(s[0] + RANKS[i] + 's');
+                } else if (s.length === 2 && s[0] === s[1]) {
+                    const s1 = rIdx(s[0]), e1 = rIdx(e[0]);
+                    for (let i = Math.min(s1,e1); i <= Math.max(s1,e1); i++) set.add(RANKS[i] + RANKS[i]);
                 }
             } else {
-                set.add(p);
+                set.add(t);
             }
         });
         return set;
     }
 
-    // DỮ LIỆU TỪNG TÌNH HUỐNG
-    const DB = {
-        'OPEN': {
-            '<12': {
-                mode: 'PUSH / FOLD (<12 BB)', badgeClass: 'badge-push',
-                data: {
-                    UTG:  { r1: '88+, AJs+, AQo+', size: 'Shove All-in (100% Stack)', notes: 'Range hẹp (Top 8-10%). Tuyệt đối không Min-raise/Fold.' },
-                    UTG1: { r1: '77+, AJs+, AQo+', size: 'Shove All-in', notes: 'Range hẹp, chỉ đẩy all-in các bài mạnh.' },
-                    MP:   { r1: '22+, A8s+, ATo+, KJs+, KQo', size: 'Shove All-in', notes: 'Top 16%. Ax đóng vai trò blocker tốt.' },
-                    HJ:   { r1: '22+, A5s+, A9o+, K9s+, KJo+, QJs', size: 'Shove All-in', notes: 'Mở rộng dần khi có ít người phía sau.' },
-                    CO:   { r1: '22+, A2s+, A7o+, K9s+, KJo+, Q9s+, J9s+, T9s', size: 'Shove All-in', notes: 'Range ~28%. Tấn công áp lực lên BTN và 2 Blinds.' },
-                    BTN:  { r1: '22+, Mọi Ax, K5s+, K8o+, Q8s+, QTo+, J8s+, T8s+, 98s', size: 'Shove All-in', notes: 'Range ~45%. Shove hầu hết bài có lá cao hoặc Suited.' },
-                    SB:   { r1: '22+, Mọi Ax, Mọi Kx, Mọi Suited, Q6o+, J7o+', size: 'Shove All-in', notes: 'Range ~60% cướp mù khẩn cấp vs BB.' },
-                    BB:   { r1: '', size: '---', notes: 'BB không Open (Xem tab Vs Open / Vs 3-Bet).' }
-                }
-            },
-            '12-25': {
-                mode: 'RESTEAL & CƯỚP BLIND (12-25 BB)', badgeClass: 'badge-resteal',
-                data: {
-                    UTG:  { r1: '77+, ATs+, AJo+, KQs', size: 'Min-raise 2.0x', notes: 'Open 12-15%. Bị 3-Bet Shove -> Chỉ Call TT+, AK.' },
-                    UTG1: { r1: '77+, ATs+, AJo+, KQs', size: 'Min-raise 2.0x', notes: 'Chơi chắc chắn ở vị trí đầu bàn.' },
-                    MP:   { r1: '55+, A8s+, ATo+, KTs+, QJs, JTs', size: 'Min-raise 2.0x', notes: 'Open ~18%. Fold phần lớn nếu bị 3-bet từ Late Position.' },
-                    HJ:   { r1: '22+, A5s+, A9o+, K9s+, KJo+, QJs', size: 'Min-raise 2.0x', notes: 'Bắt đầu nâng tần suất cướp blind.' },
-                    CO:   { r1: '22+, A2s+, A8o+, K8s+, Q9s+, Suited Connectors', size: 'Min-raise 2.0x', notes: 'Open ~28%. Chuẩn bị đối mặt 3-bet resteal từ Blinds.' },
-                    BTN:  { r1: '22+, A2s+, A5o+, K5s+, K9o+, Q8s+, Suited Connectors', size: 'Min-raise 2.0x', notes: 'Open 40-45%. Chỉ Call 3-bet shove với 99+, AQ+.' },
-                    SB:   { r1: '22+, Mọi Ax, K8s+, Q9s+, J9s+, A8o+', size: 'Min-raise 2.2x hoặc Shove', notes: 'Open rộng vs BB, cẩn thận nếu BB thích 3-Bet shove.' },
-                    BB:   { r1: '', size: '---', notes: 'Xem tab Vs Open Raise.' }
-                }
-            },
-            '25-50': {
-                mode: 'MAIN GAME STANDARD (25-50 BB)', badgeClass: 'badge-main',
-                data: {
-                    UTG:  { r1: '22+, A9s+, AJo+, KTs+, QTs+, JTs, 98s', size: 'Open 2.1x', notes: 'C-bet 25-33% pot ở flop khô (K-8-3). Check-fold khi hụt ở flop ướt.' },
-                    UTG1: { r1: '22+, A9s+, AJo+, KTs+, QTs+, JTs', size: 'Open 2.1x', notes: 'Đánh chắc chắn, tránh pot to khi OOP.' },
-                    MP:   { r1: '22+, A8s+, ATo+, K9s+, QTs+, JTs, 87s', size: 'Open 2.1x', notes: 'Giữ range cân bằng giữa value và bài tiềm năng.' },
-                    HJ:   { r1: '22+, A5s+, A9o+, K8s+, Q9s+, J9s+, 76s+', size: 'Open 2.1x', notes: 'Mở rộng dần khi chuẩn bị đến vị trí muộn.' },
-                    CO:   { r1: '22+, A2s+, A7o+, K5s+, K9o+, Q8s+, Suited Connectors', size: 'Open 2.1x', notes: 'Tấn công Blinds. Bet Value 50-66% khi dính Top Pair+.' },
-                    BTN:  { r1: '22+, Mọi Ax, mọi Suited, Broadway, Connectors tới 54s', size: 'Open 2.1x - 2.2x', notes: 'Tận dụng tuyệt đối lợi thế In Position (IP).' },
-                    SB:   { r1: '22+, A2s+, A8o+, K8s+, Q9s+', size: 'Open 2.5x vs BB', notes: 'Nếu BB là Nit -> Auto raise cướp. Nếu BB Station -> Chờ bài to.' },
-                    BB:   { r1: '', size: '---', notes: 'Xem tab Vs Open Raise.' }
-                }
-            },
-            '>50': {
-                mode: 'DEEP STACK (IMPLIED ODDS) (>50 BB)', badgeClass: 'badge-deep',
-                data: {
-                    UTG:  { r1: '22+, A2s+, AJo+, KTs+, QTs+, Connectors 76s+', size: 'Open 2.2x - 2.5x', notes: 'Set-mining cực giá trị. Trúng Set là nhắm ăn trọn Stack đối thủ.' },
-                    UTG1: { r1: '22+, A2s+, AJo+, KTs+, QTs+', size: 'Open 2.2x', notes: 'Ưu tiên các bài có khả năng tạo Nut.' },
-                    MP:   { r1: '22+, Mọi Ax, K9s+, Q9s+, Suited Connectors', size: 'Open 2.2x', notes: 'Đánh chắc Preflop, build pot to Postflop khi hit mạnh.' },
-                    HJ:   { r1: '22+, Mọi Ax, K8s+, Suited Connectors, Broadway', size: 'Open 2.2x', notes: 'Tận dụng Implied Odds từ Suited Connectors.' },
-                    CO:   { r1: '22+, Mọi Suited, Suited Connectors, A7o+, K9o+', size: 'Open 2.2x - 2.5x', notes: 'Bet to (66-80% Pot) cả 3 vòng khi cầm Set/Two Pair/Straight/Flush.' },
-                    BTN:  { r1: '22+, Mọi Ax, Mọi Suited, Mọi Kx, Connectors 54s+', size: 'Open 2.5x', notes: 'KHÔNG SLOWPLAY ở Micro khi dính bài mạnh!' },
-                    SB:   { r1: '22+, A2s+, A8o+, K8s+, Q9s+', size: 'Open 2.5x - 3.0x', notes: 'Chỉ chơi bài mạnh vì sẽ phải đánh OOP cả ván.' },
-                    BB:   { r1: '', size: '---', notes: 'Xem tab Vs Open Raise.' }
-                }
-            }
-        },
-        'VS_OPEN': {
-            '<12': {
-                mode: 'VS OPEN KHI SHORT STACK (<12 BB)', badgeClass: 'badge-push',
-                data: {
-                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { r1: 'JJ+, AKs, AKo', r2: '', size: 'Shove All-in', notes: 'Đối mặt UTG open: Chỉ Shove bài Premium, không Flat call.' },
-                    MP:   { r1: 'TT+, AKs, AKo', r2: '', size: 'Shove All-in', notes: 'Không Flat call khi stack < 12BB.' },
-                    HJ:   { r1: 'TT+, AKs, AKo, AQs', r2: '', size: 'Shove All-in', notes: 'Chỉ 3-bet Shove hoặc Fold.' },
-                    CO:   { r1: '88+, AJs+, AQo+, KQs', r2: '', size: 'Shove All-in', notes: 'Shove cách ly đối thủ ở vị trí trước.' },
-                    BTN:  { r1: '77+, ATs+, AJo+, KQs', r2: '', size: 'Shove All-in', notes: 'Tận dụng vị trí để Shove cách ly.' },
-                    SB:   { r1: '88+, AJs+, AQo+', r2: '', size: 'Shove All-in', notes: 'Đừng Call ở SB vì BB đằng sau có thể Shove ép văng.' },
-                    BB:   { r1: '66+, ATs+, AJo+, KQs', r2: 'Suited Connectors', size: 'Call hoặc Shove', notes: 'Chỉ call nếu được pot odds cực rẻ, còn lại Shove hoặc Fold.' }
-                }
-            },
-            '12-25': {
-                mode: 'VS OPEN: 3-BET RESTEAL & CALL (12-25 BB)', badgeClass: 'badge-resteal',
-                data: {
-                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { r1: 'JJ+, AKs, AKo', r2: '88-TT, AQs', size: '3-Bet Shove / Call', notes: 'Đối mặt UTG: Cực kỳ cẩn trọng.' },
-                    MP:   { r1: 'TT+, AKs, AKo, AQs', r2: '77-99, KQs, QJs', size: '3-Bet Shove / Call', notes: 'Hạn chế Call nếu đằng sau còn nhiều đối thủ Aggressive.' },
-                    HJ:   { r1: 'TT+, AKs, AKo, A2s-A5s', r2: '66-99, AJs, KQs', size: '3-Bet Shove / Call', notes: 'Resteal rất hiệu quả ở mốc này.' },
-                    CO:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, AJs, KQs, QJs', size: '3-Bet Shove / Call', notes: 'Áp lực lên MP/HJ đã open.' },
-                    BTN:  { r1: 'TT+, AKs, AKo, A2s-A5s', r2: '22-99, A9s+, KTs+, QTs+, JTs, T9s', size: '3-Bet 3x / Call IP', notes: 'Có vị trí hoàn hảo, Flat Call cực kỳ có lợi thế Postflop.' },
-                    SB:   { r1: 'JJ+, AKs, AKo, 88-TT, A2s-A5s', r2: '', size: '3-Bet 3.5x - 4x hoặc Shove', notes: 'Ở Micro, Flat Call SB là rò rỉ chip lớn nhất. Hãy 3-Bet hoặc Fold!' },
-                    BB:   { r1: '77-TT, AJs, A2s-A5s, KQo', r2: '22-66, A2s+, K8s+, Q9s+, Suited Connectors', size: 'Call 1BB hoặc 3-Bet Shove', notes: 'Được giảm giá 1BB nên defend call rộng.' }
-                }
-            },
-            '25-50': {
-                mode: 'VS OPEN: 3-BET & FLAT CALL STANDARD (25-50 BB)', badgeClass: 'badge-main',
-                data: {
-                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { r1: 'QQ+, AKs', r2: '99-JJ, AQs, KQs', size: '3-Bet 3x / Call', notes: 'Không 3-bet lung tung vs UTG.' },
-                    MP:   { r1: 'JJ+, AKs, AKo, A5s', r2: '88-TT, AJs, KQs, QJs', size: '3-Bet 3x / Call', notes: 'Giữ range call bài có khả năng tạo nut.' },
-                    HJ:   { r1: 'TT+, AKs, AKo, A4s-A5s, KJs', r2: '77-99, ATs+, KTs+, QTs+, JTs', size: '3-Bet 3x / Call', notes: 'Tấn công đối thủ open lỏng ở MP.' },
-                    CO:   { r1: 'TT+, AQ+, A5s, KQs', r2: '22-99, Suited Connectors, Broadways', size: '3-Bet 3x / Call IP', notes: 'Flat call rất lời nhờ vị trí đè bẹp các vị trí trước.' },
-                    BTN:  { r1: 'TT+, AQ+, A2s-A5s, K9s, T8s', r2: '22-99, Mọi Suited, KTs+, QTs+, Connectors', size: '3-Bet 3x / Call IP', notes: 'Vị trí vua. Flat call để outplay đối thủ sau flop.' },
-                    SB:   { r1: 'TT+, AQ+, A5s, KQs', r2: '22-66', size: '3-Bet 3.5x - 4x', notes: 'Tuyệt đối không Flat call OOP với bài rác. 3-Bet hoặc Fold!' },
-                    BB:   { r1: 'JJ+, AKs, AKo, A2s-A5s, KJs', r2: '22-TT, Mọi Ax, Broadways, Suited Connectors', size: 'Call 1.1x hoặc 3-Bet 3.5x', notes: 'Bảo vệ mù tối đa. Tận dụng Check-Raise ở Flop.' }
-                }
-            },
-            '>50': {
-                mode: 'VS OPEN: DEEP STACK IMPLIED ODDS (>50 BB)', badgeClass: 'badge-deep',
-                data: {
-                    UTG:  { r1: '', r2: '', size: '---', notes: 'UTG đi đầu.' },
-                    UTG1: { r1: 'QQ+, AKs', r2: '22-JJ, AQs, Suited Connectors', size: '3-Bet 3x / Call', notes: 'Set-mining cực mạnh khi stack > 50BB.' },
-                    MP:   { r1: 'JJ+, AKs, AKo, A5s', r2: '22-TT, AJs, KQs, Suited Connectors', size: '3-Bet 3x / Call', notes: 'Tận dụng Implied Odds ăn trọn stack đối thủ.' },
-                    HJ:   { r1: 'TT+, AKs, AKo, A4s-A5s, KJs', r2: '22-99, Suited Ax, Connectors', size: '3-Bet 3x / Call', notes: 'Tránh sa lầy vào pair nhỏ nếu không hit set.' },
-                    CO:   { r1: 'TT+, AQ+, A2s-A5s', r2: '22-99, Mọi Suited, Connectors, Ax suited', size: '3-Bet 3x / Call IP', notes: 'Vị trí tuyệt vời để khai thác đối thủ sau flop.' },
-                    BTN:  { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, Mọi Suited, Mọi Connectors, Broadways', size: '3-Bet 3x / Call IP', notes: 'Đừng ngại Flat Call ở BTN khi Deep Stack.' },
-                    SB:   { r1: 'TT+, AQ+, KQs, A5s', r2: '', size: '3-Bet 4x Pot', notes: 'Size 3-bet từ SB phải to (4x) để triệt tiêu lợi thế vị trí của đối thủ.' },
-                    BB:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, Mọi Ax, Mọi Suited, Connectors', size: 'Call / 3-Bet 4x', notes: 'Tận dụng Odds tốt, chơi cẩn thận khi đối thủ bet nhiều barrel.' }
+    // =========================================================================
+    // DỮ LIỆU ĐẦY ĐỦ POKERCOACHING (JONATHAN LITTLE)
+    // =========================================================================
+    const CHARTS_DB = {
+        'RFI': {
+            title: '1. Raise First-In (RFI)',
+            spots: {
+                'UTG': {
+                    name: 'UTG RFI',
+                    stats: 'Raise: 15.7% (222 combos)',
+                    raise: '66+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, 87s, ATo+, KJo+, QJo',
+                    call: '',
+                    tip: '<b>Tư duy UTG:</b> Phải đánh xuyên qua 7 đối thủ. Chỉ mở bài có tính kết nối cao và bài Premium. Tuyệt đối loại bỏ Offsuit rác.'
+                },
+                'UTG1': {
+                    name: 'UTG+1 RFI',
+                    stats: 'Raise: 17.5% (232 combos)',
+                    raise: '55+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, 87s, 76s, ATo+, KJo+, QJo',
+                    call: '',
+                    tip: '<b>Tư duy UTG+1:</b> Mở thêm đôi 55 và suited connector 76s. Vẫn phải giữ range cực kỳ kỷ luật.'
+                },
+                'LJ': {
+                    name: 'Lojack (LJ) RFI',
+                    stats: 'Raise: 23.5% (312 combos)',
+                    raise: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 87s, 76s, 65s, A9o+, KTo+, QTo+, JTo',
+                    call: '',
+                    tip: '<b>Tư duy Lojack:</b> Mở toàn bộ Pocket Pairs (22+) để set-mine, thêm các bài Suited Gappers (97s, T8s).'
+                },
+                'HJ': {
+                    name: 'Hijack (HJ) RFI',
+                    stats: 'Raise: 27.8% (368 combos)',
+                    raise: '22+, A2s+, K5s+, Q7s+, J8s+, T8s+, 97s+, 86s+, 76s, 65s, 54s, A8o+, KTo+, QTo+, JTo',
+                    call: '',
+                    tip: '<b>Tư duy Hijack:</b> Tiếp tục mở rộng cánh én suited connectors. Bắt đầu tăng áp lực lên Late Position.'
+                },
+                'CO': {
+                    name: 'Cutoff (CO) RFI',
+                    stats: 'Raise: 36.2% (480 combos)',
+                    raise: '22+, A2s+, K2s+, Q5s+, J7s+, T7s+, 97s+, 86s+, 75s+, 65s, 54s, A5o+, A8o+, K9o+, Q9o+, J9o+, T9o',
+                    call: '',
+                    tip: '<b>Tư duy Cutoff:</b> Bùng nổ range (>36%). Mở mọi Kx đồng chất, hầu hết suited one-gappers để trộm blind.'
+                },
+                'BTN': {
+                    name: 'Button (BTN) RFI',
+                    stats: 'Raise: 50.8% (674 combos)',
+                    raise: '22+, A2s+, K2s+, Q2s+, J4s+, T6s+, 96s+, 85s+, 75s+, 64s+, 53s+, 43s, A2o+, K7o+, Q8o+, J8o+, T8o+, 98o',
+                    call: '',
+                    tip: '<b>Tư duy Button:</b> Vị trí VUA. Mở trên 50% số bài vì bạn luôn có vị trí (In Position) sau Flop trước SB và BB.'
+                },
+                'SB': {
+                    name: 'Small Blind (SB) RFI',
+                    stats: 'Raise: 38.0% | Call (Limp): 50.1%',
+                    raise: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, A8o+, KTo+, QTo+, JTo',
+                    call: 'A2o-A7o, K2o-K9o, Q2o-Q7o, J4o-J7o, T6o-T7o, Suited rác',
+                    tip: '<b>Tư duy SB:</b> PokerCoaching áp dụng chiến lược kết hợp Raise (38%) bài mạnh và Limp (Call 50%) bài trung bình để xem flop rẻ.'
                 }
             }
         },
-        'VS_3BET': {
-            '<12': {
-                mode: 'VS 3-BET SHORT STACK (<12 BB)', badgeClass: 'badge-push',
-                data: {
-                    UTG:  { r1: 'JJ+, AKs, AKo', r2: '', size: 'All-in Shove', notes: 'Đã open thì bị 3-bet Shove chỉ call bài Nut.' },
-                    UTG1: { r1: 'JJ+, AKs, AKo', r2: '', size: 'All-in', notes: 'Không cố đấm ăn xôi với bài trung bình.' },
-                    MP:   { r1: 'TT+, AKs, AKo', r2: '', size: 'All-in', notes: 'Micro 3-bet rất hẹp, hãy tôn trọng họ.' },
-                    HJ:   { r1: 'TT+, AKs, AKo, AQs', r2: '', size: 'All-in', notes: 'Chỉ Call All-in với top bài.' },
-                    CO:   { r1: '99+, AQ+, AKo', r2: '', size: 'All-in', notes: 'Nếu đối thủ 3-bet từ Blinds, có thể mở rộng nhẹ.' },
-                    BTN:  { r1: '88+, AJs+, AQo+, KQo', r2: '', size: 'All-in', notes: 'Blinds resteal thường rộng hơn.' },
-                    SB:   { r1: 'TT+, AKs, AKo', r2: '', size: 'All-in', notes: 'Bị BB 3-bet shove: Thắt chặt range call.' },
-                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
+        'VS_UTG': {
+            title: '2. Facing vs UTG RFI',
+            spots: {
+                'CO_vs_UTG': {
+                    name: 'CO vs UTG RFI',
+                    stats: '3-Bet: 4.8% | Call: 12.8%',
+                    raise: 'QQ+, AKs, AKo, A5s',
+                    call: '66-JJ, AQs, AJs, KQs, QJs, JTs, T9s',
+                    tip: '<b>Tư duy vs UTG:</b> Range UTG cực mạnh. Chỉ 3-bet Value quái vật (QQ+, AK) kèm bluff A5s blocker. Các bài đôi trung bình chỉ Flat Call.'
+                },
+                'BTN_vs_UTG': {
+                    name: 'BTN vs UTG RFI',
+                    stats: '3-Bet: 5.3% | Call: 16.0%',
+                    raise: 'JJ+, AKs, AKo, A5s, A4s',
+                    call: '22-TT, AQs, AJs, KQs, QJs, JTs, T9s, 98s',
+                    tip: '<b>Tư duy BTN vs UTG:</b> Ở BTN được quyền Flat Call cực rộng (22-TT, Suited Connectors) nhờ lợi thế In Position sau flop.'
+                },
+                'SB_vs_UTG': {
+                    name: 'SB vs UTG RFI',
+                    stats: '3-Bet: 5.4% | Call: 14.0%',
+                    raise: 'TT+, AKs, AKo, A5s',
+                    call: '22-99, AQs, KQs',
+                    tip: '<b>Tư duy SB vs UTG:</b> Hạn chế tối đa Flat Call vì mất vị trí cả ván đấu. Chỉ call các bài có khả năng hit Set to.'
+                },
+                'BB_vs_UTG': {
+                    name: 'BB vs UTG RFI',
+                    stats: '3-Bet: 5.7% | Call: 50.2%',
+                    raise: 'JJ+, AKs, AKo, A5s, A4s',
+                    call: '22-TT, A2s-AQs, K8s+, Q9s+, J9s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, ATo-AQo, KJo-KQo',
+                    tip: '<b>Tư duy BB vs UTG:</b> Nhờ Pot Odds được giảm giá 1BB, BB defend call tới 50% bài. Nhưng sau flop phải kỷ luật check-fold nếu trượt.'
                 }
-            },
-            '12-25': {
-                mode: 'VS 3-BET KHI CÓ 12-25 BB', badgeClass: 'badge-resteal',
-                data: {
-                    UTG:  { r1: 'QQ+, AKs, AKo', r2: 'TT-JJ, AQs', size: '4-Bet Shove / Call', notes: 'Nếu bị Shove -> Fold sạch ngoại trừ QQ+, AK.' },
-                    UTG1: { r1: 'QQ+, AKs, AKo', r2: 'TT-JJ, AQs', size: '4-Bet Shove', notes: 'Tôn trọng 3-bet ở vị trí sớm.' },
-                    MP:   { r1: 'JJ+, AKs, AKo', r2: '99-TT, AQs', size: '4-Bet Shove / Call', notes: 'Fold các bài Ax nhỏ và connectors yếu.' },
-                    HJ:   { r1: 'TT+, AKs, AKo, A5s', r2: '88-99, AJs, KQs', size: '4-Bet Shove', notes: 'Đề phòng đối thủ ở Blinds resteal.' },
-                    CO:   { r1: '99+, AQ+, A4s-A5s', r2: '77-88, AJs, KQs', size: '4-Bet Shove / Call IP', notes: 'Nếu đối thủ 3-bet nhỏ và ta có IP -> có thể Call xem flop.' },
-                    BTN:  { r1: '88+, AQ+, A5s', r2: '66-77, AJs, KQs, QJs, JTs', size: 'Call IP hoặc 4-Bet Shove', notes: 'Có IP là lợi thế lớn nhất khi call 3-bet.' },
-                    SB:   { r1: 'TT+, AKs, AKo', r2: '', size: '4-Bet Shove / Fold', notes: 'Ở SB bị BB 3-bet: Chỉ Shove hoặc Fold, không Call vì mất vị trí.' },
-                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
+            }
+        },
+        'VS_MP': {
+            title: '3. Facing vs MP (LJ/HJ)',
+            spots: {
+                'CO_vs_MP': {
+                    name: 'CO vs LJ/HJ RFI',
+                    stats: '3-Bet: 7.4% | Call: 11.6%',
+                    raise: 'TT+, AKs, AKo, A4s-A5s, KJs',
+                    call: '22-99, AJs, AQs, KQs, QJs, JTs',
+                    tip: '<b>Tư duy CO vs MP:</b> MP mở rộng hơn UTG nên ta có thể 3-bet rộng hơn với TT+ và thêm bluff KJs.'
+                },
+                'BTN_vs_MP': {
+                    name: 'BTN vs LJ/HJ RFI',
+                    stats: '3-Bet: 8.5% | Call: 15.7%',
+                    raise: 'TT+, AKs, AKo, A2s-A5s, KJs, T9s',
+                    call: '22-99, A9s+, KTs+, QTs+, JTs, 87s, 76s',
+                    tip: '<b>Tư duy BTN vs MP:</b> Mở rộng tối đa dải 3-bet bluff (A2s-A5s) và tiếp tục flat call bài tiềm năng.'
+                },
+                'BB_vs_MP': {
+                    name: 'BB vs LJ/HJ RFI',
+                    stats: '3-Bet: 7.4% | Call: 56.4%',
+                    raise: 'TT+, AKs, AKo, A2s-A5s, KJs',
+                    call: '22-99, Mọi Ax suited, Broadways, Connectors',
+                    tip: '<b>Tư duy BB vs MP:</b> Defend tới 56% ma trận. Check-Raise flop ở các mặt bài có texture thuận lợi.'
                 }
-            },
-            '25-50': {
-                mode: 'VS 3-BET: 4-BET & DEFEND (25-50 BB)', badgeClass: 'badge-main',
-                data: {
-                    UTG:  { r1: 'KK+, AKs', r2: 'TT-QQ, AKo, AQs', size: 'Call / 4-Bet', notes: 'Fold hết các suited connectors nhỏ đã open.' },
-                    UTG1: { r1: 'KK+, AKs, AKo', r2: 'TT-JJ, AQs, KQs', size: 'Call / 4-Bet', notes: 'Thận trọng, người 3-bet UTG1 thường cầm bài quái vật.' },
-                    MP:   { r1: 'QQ+, AKs, AKo, A5s', r2: 'TT-JJ, AQs, KQs, JTs', size: '4-Bet 2.3x / Call', notes: 'Fold các broadway yếu như QTo, KJo.' },
-                    HJ:   { r1: 'JJ+, AKs, AKo, A4s-A5s', r2: '99-TT, AJs, AQs, KQs, QJs', size: '4-Bet / Call', notes: 'Bắt đầu có range 4-bet bluff nhẹ với Ax suited.' },
-                    CO:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '88-TT, ATs+, KTs+, QJs, JTs, T9s', size: 'Call IP hoặc 4-Bet', notes: 'Nếu người 3-bet là Blinds, ta có In Position tha hồ float flop.' },
-                    BTN:  { r1: 'TT+, AKs, AKo, A2s-A5s, K9s', r2: '66-99, A9s+, KTs+, QTs+, Suited Connectors', size: 'Call IP (Rất khuyến khích)', notes: 'Tận dụng IP để outplay đối thủ c-bet ở Flop.' },
-                    SB:   { r1: 'JJ+, AKs, AKo, A5s', r2: 'TT, AQs', size: '4-Bet to hoặc Fold', notes: 'Đánh OOP sau flop khi bị 3-bet là cơn ác mộng ở Micro.' },
-                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
+            }
+        },
+        'VS_LP': {
+            title: '4. Facing vs LP (CO/BTN)',
+            spots: {
+                'BTN_vs_CO': {
+                    name: 'BTN vs CO RFI',
+                    stats: '3-Bet: 11.6% | Call: 16.6%',
+                    raise: '88+, AJs+, KQs, AKo, A2s-A5s, KTs, QTs, JTs',
+                    call: '22-77, A8s-ATs, K9s, Q9s, J8s+, T8s+, 97s+, Connectors',
+                    tip: '<b>Tư duy BTN vs CO:</b> Trận chiến cướp vị trí! 3-bet trừng phạt CO với tần suất rất cao (>11%).'
+                },
+                'SB_vs_BTN': {
+                    name: 'SB vs BTN RFI',
+                    stats: '3-Bet: 14.0% | Call: 6.0%',
+                    raise: '77+, ATs+, KJs+, QJs, AJo+, KQo, A2s-A5s, K9s, Q9s, J9s, T8s',
+                    call: '22-66, A8s-A9s, KTs, QTs',
+                    tip: '<b>Tư duy SB vs BTN:</b> Cực kỳ quan trọng: 3-Bet cực to (14%) và HẠN CHẾ tối đa Call (chỉ 6%). Phải triệt tiêu lợi thế của BTN!'
+                },
+                'BB_vs_BTN': {
+                    name: 'BB vs BTN RFI',
+                    stats: '3-Bet: 14.9% | Call: 64.9%',
+                    raise: '88+, AJs+, KQs, AKo, A2s-A5s, K8s-KTs, Q9s, J9s, T8s',
+                    call: 'Hầu như toàn bộ bài có liên kết (65% bài)',
+                    tip: '<b>Tư duy BB vs BTN:</b> BTN mở tới 50% nên BB được quyền defend 65% và 3-bet áp lực 15%.'
                 }
-            },
-            '>50': {
-                mode: 'VS 3-BET KHI DEEP STACK (>50 BB)', badgeClass: 'badge-deep',
-                data: {
-                    UTG:  { r1: 'KK+, AKs', r2: '22-QQ, AKo, AQs, KQs', size: 'Call / 4-Bet', notes: 'Deep stack cho phép Set-mine khi call 3-bet.' },
-                    UTG1: { r1: 'KK+, AKs', r2: '22-QQ, AQs, KQs', size: 'Call / 4-Bet', notes: 'Ăn trọn stack nếu đối thủ cầm overpair khi ta hit set.' },
-                    MP:   { r1: 'QQ+, AKs, AKo, A5s', r2: '22-JJ, AJs+, KQs, QJs, Suited Connectors', size: 'Call / 4-Bet', notes: 'Tránh call với Offsuit rác.' },
-                    HJ:   { r1: 'QQ+, AKs, AKo, A4s-A5s', r2: '22-TT, ATs+, KTs+, Connectors', size: 'Call / 4-Bet', notes: 'Call với bài có tính biến hóa cao.' },
-                    CO:   { r1: 'JJ+, AKs, AKo, A2s-A5s', r2: '22-TT, Mọi Ax, Suited Connectors', size: 'Call IP', notes: 'Có vị trí, call thoải mái để set-mine và bắt bài c-bet.' },
-                    BTN:  { r1: 'TT+, AKs, AKo, A2s-A5s', r2: '22-99, Mọi Suited, Mọi Connectors', size: 'Call IP', notes: 'Chỉ fold bài rác nhất đã dùng để steal blind.' },
-                    SB:   { r1: 'JJ+, AKs, AKo', r2: 'TT-QQ, AQs', size: '4-Bet to', notes: 'Nếu không có 4-bet, hãy Fold thay vì Call cố khi OOP.' },
-                    BB:   { r1: '', r2: '', size: '---', notes: 'BB không phải người Open.' }
+            }
+        },
+        'BVB': {
+            title: '5. Blind vs Blind (SB / BB)',
+            spots: {
+                'BB_vs_SB_Limp': {
+                    name: 'BB vs SB Limp',
+                    stats: 'Raise (Iso): 44.0% | Check: 56.0%',
+                    raise: '22+, A2s+, K2s+, Q4s+, J6s+, T7s+, 97s+, 86s+, 76s, A2o+, K7o+, Q8o+, J8o+, T8o+',
+                    call: 'Check các bài còn lại',
+                    tip: '<b>Tư duy BB vs SB Limp:</b> SB chỉ Limp là biểu hiện yếu đuối. BB cầm vị trí IP lập tức Raise cách ly tới 44% range để cướp pot ngay!'
+                },
+                'BB_vs_SB_Raise': {
+                    name: 'BB vs SB Raise',
+                    stats: '3-Bet: 12.5% | Call: 54.0%',
+                    raise: '88+, AJs+, KQs, AKo, A2s-A5s, K9s, Q9s',
+                    call: '22-77, Ax suited, Broadways, Connectors',
+                    tip: '<b>Tư duy BB vs SB Raise:</b> SB đánh OOP nên BB vừa có Pot Odds vừa có vị trí. Call thoải mái để outplay SB sau flop.'
                 }
             }
         }
     };
 
-    function setStack(stack, btn) {
-        currentStack = stack;
+    // =========================================================================
+    // LOGIC CHẾ ĐỘ VIEW (TRA CỨU CHARTS)
+    // =========================================================================
+    let curCat = 'RFI';
+    let curSpotKey = 'UTG';
+
+    function setCategory(cat, btn) {
+        curCat = cat;
         updateActive(btn);
-        render();
+        renderSubButtons();
+        // Mặc định chọn sub đầu tiên
+        const firstKey = Object.keys(CHARTS_DB[cat].spots)[0];
+        setSpot(firstKey);
     }
 
-    function setScenario(scen, btn) {
-        currentScenario = scen;
-        updateActive(btn);
-        render();
+    function setSpot(spotKey, btn) {
+        curSpotKey = spotKey;
+        if (btn) updateActive(btn);
+        else {
+            // Cập nhật active button tương ứng trong subGroup
+            const subBtns = document.getElementById('subGroup').children;
+            for (let b of subBtns) {
+                if (b.getAttribute('data-key') === spotKey) b.classList.add('active');
+                else b.classList.remove('active');
+            }
+        }
+        renderMatrix();
     }
 
-    function setPos(pos, btn) {
-        currentPos = pos;
-        updateActive(btn);
-        render();
+    function renderSubButtons() {
+        const subGroup = document.getElementById('subGroup');
+        subGroup.innerHTML = '';
+        const spots = CHARTS_DB[curCat].spots;
+
+        for (let key in spots) {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = spots[key].name;
+            btn.setAttribute('data-key', key);
+            btn.onclick = function() { setSpot(key, this); };
+            subGroup.appendChild(btn);
+        }
+    }
+
+    function renderMatrix() {
+        const spot = CHARTS_DB[curCat].spots[curSpotKey];
+        document.getElementById('chartTitle').innerText = spot.name;
+        document.getElementById('chartStats').innerText = spot.stats;
+        document.getElementById('chartExplanation').innerHTML = spot.tip;
+
+        const raiseSet = expandRange(spot.raise);
+        const callSet = expandRange(spot.call);
+
+        const grid = document.getElementById('pokerGrid');
+        grid.innerHTML = '';
+
+        for (let r = 0; r < 13; r++) {
+            for (let c = 0; c < 13; c++) {
+                const hand = MATRIX[r][c];
+                const cell = document.createElement('div');
+                cell.className = 'poker-cell';
+                cell.innerText = hand;
+
+                if (raiseSet.has(hand)) {
+                    cell.classList.add('cell-raise');
+                } else if (callSet.has(hand)) {
+                    cell.classList.add('cell-call');
+                } else {
+                    cell.classList.add('cell-fold');
+                }
+                grid.appendChild(cell);
+            }
+        }
     }
 
     function updateActive(btn) {
@@ -583,78 +703,139 @@
         btn.classList.add('active');
     }
 
-    function render() {
-        const scenData = DB[currentScenario][currentStack];
-        const mode = scenData.mode;
-        const badgeClass = scenData.badgeClass;
-        const item = scenData.data[currentPos];
+    // =========================================================================
+    // LOGIC CHẾ ĐỘ TRAINER (LUYỆN TẬP PHẢN XẠ)
+    // =========================================================================
+    let trainScore = 0;
+    let trainTotal = 0;
+    let trainStreak = 0;
+    let currentQuiz = null;
 
-        document.getElementById('modeBadge').className = 'mode-badge ' + badgeClass;
-        document.getElementById('modeBadge').innerText = mode;
-        document.getElementById('posStackInfo').innerText = `${currentPos} | ${currentStack} BB`;
+    function switchAppMode(mode) {
+        const vView = document.getElementById('viewModeViewer');
+        const vTrain = document.getElementById('viewModeTrainer');
+        const bView = document.getElementById('tabViewerBtn');
+        const bTrain = document.getElementById('tabTrainerBtn');
 
-        // Render Legend Bar
-        let legendHTML = '';
-        if (currentScenario === 'OPEN') {
-            legendHTML = `
-                <div class="legend-item"><div class="legend-box" style="background:#ff5252;"></div> 🟥 OPEN RAISE / PUSH</div>
-                <div class="legend-item"><div class="legend-box" style="background:#1b1f27; border: 1px solid #4a5568;"></div> ⬛ FOLD</div>
-            `;
-        } else if (currentScenario === 'VS_OPEN') {
-            legendHTML = `
-                <div class="legend-item"><div class="legend-box" style="background:#ff9100;"></div> 🟧 3-BET (VALUE/BLUFF)</div>
-                <div class="legend-item"><div class="legend-box" style="background:#00e676;"></div> 🟩 FLAT CALL DEFEND</div>
-                <div class="legend-item"><div class="legend-box" style="background:#1b1f27; border: 1px solid #4a5568;"></div> ⬛ FOLD</div>
-            `;
-        } else if (currentScenario === 'VS_3BET') {
-            legendHTML = `
-                <div class="legend-item"><div class="legend-box" style="background:#ff5252;"></div> 🟥 4-BET / SHOVE</div>
-                <div class="legend-item"><div class="legend-box" style="background:#00e676;"></div> 🟩 CALL 3-BET</div>
-                <div class="legend-item"><div class="legend-box" style="background:#1b1f27; border: 1px solid #4a5568;"></div> ⬛ FOLD</div>
-            `;
+        if (mode === 'VIEWER') {
+            vView.style.display = 'block';
+            vTrain.style.display = 'none';
+            bView.classList.add('active');
+            bTrain.classList.remove('active');
+        } else {
+            vView.style.display = 'none';
+            vTrain.style.display = 'block';
+            bTrain.classList.add('active');
+            bView.classList.remove('active');
+            nextTrainerQuestion();
         }
-        document.getElementById('legendBar').innerHTML = legendHTML;
+    }
 
-        // TÍNH TOÁN SET BÀI
-        const set1 = expandRange(item.r1);
-        const set2 = expandRange(item.r2);
+    function generateRandomHand() {
+        const r1 = Math.floor(Math.random() * 13);
+        const r2 = Math.floor(Math.random() * 13);
+        let s1 = Math.floor(Math.random() * 4);
+        let s2 = Math.floor(Math.random() * 4);
 
-        // VẼ GRID 13x13
-        const grid = document.getElementById('pokerGrid');
-        grid.innerHTML = '';
+        // Đảm bảo không trùng lá
+        if (r1 === r2 && s1 === s2) s2 = (s1 + 1) % 4;
 
-        for (let r = 0; r < 13; r++) {
-            for (let c = 0; c < 13; c++) {
-                const hand = MATRIX_HANDS[r][c];
-                const cell = document.createElement('div');
-                cell.className = 'poker-cell';
-                cell.innerText = hand;
+        // Xác định tên hand chuẩn (VD: AKs, A5o, 77)
+        let handName = '';
+        const rankHigh = r1 <= r2 ? RANKS[r1] : RANKS[r2];
+        const rankLow = r1 <= r2 ? RANKS[r2] : RANKS[r1];
 
-                if (set1.has(hand)) {
-                    if (currentScenario === 'VS_OPEN') {
-                        cell.classList.add('cell-3bet');
-                    } else {
-                        cell.classList.add('cell-raise');
-                    }
-                } else if (set2.has(hand)) {
-                    cell.classList.add('cell-call');
-                } else {
-                    cell.classList.add('cell-fold');
-                }
-
-                grid.appendChild(cell);
-            }
+        if (r1 === r2) {
+            handName = RANKS[r1] + RANKS[r2];
+        } else if (s1 === s2) {
+            handName = rankHigh + rankLow + 's';
+        } else {
+            handName = rankHigh + rankLow + 'o';
         }
 
-        // PANEL THÔNG TIN
-        document.getElementById('infoPanel').innerHTML = `
-            <div><b>KÍCH THƯỚC BET / ACTION:</b> ${item.size}</div>
-            <div style="margin-top: 4px;"><b>MẸO EXPLOIT MICRO:</b> ${item.notes}</div>
+        return {
+            c1: { rank: RANKS[r1], suit: SUITS[s1] },
+            c2: { rank: RANKS[r2], suit: SUITS[s2] },
+            handName: handName
+        };
+    }
+
+    function nextTrainerQuestion() {
+        document.getElementById('feedbackBox').style.display = 'none';
+        document.getElementById('btnNext').style.display = 'none';
+        document.getElementById('trainerActions').style.display = 'grid';
+
+        // Chọn ngẫu nhiên 1 kịch bản từ Database
+        const catKeys = Object.keys(CHARTS_DB);
+        const randCat = catKeys[Math.floor(Math.random() * catKeys.length)];
+        const spotKeys = Object.keys(CHARTS_DB[randCat].spots);
+        const randSpotKey = spotKeys[Math.floor(Math.random() * spotKeys.length)];
+        const spot = CHARTS_DB[randCat].spots[randSpotKey];
+
+        const handObj = generateRandomHand();
+
+        // Xác định đáp án chuẩn của hand trong chart đó
+        const raiseSet = expandRange(spot.raise);
+        const callSet = expandRange(spot.call);
+
+        let correctAction = 'FOLD';
+        if (raiseSet.has(handObj.handName)) correctAction = 'RAISE';
+        else if (callSet.has(handObj.handName)) correctAction = 'CALL';
+
+        currentQuiz = {
+            spot: spot,
+            hand: handObj,
+            correctAction: correctAction
+        };
+
+        // Render UI
+        document.getElementById('trainPos').innerText = spot.name;
+        document.getElementById('trainContext').innerText = `Tình huống: ${spot.name}. Bạn cầm bài dưới đây, hành động chuẩn theo PokerCoaching là gì?`;
+
+        const cardsBox = document.getElementById('cardsBox');
+        cardsBox.innerHTML = `
+            <div class="poker-card">
+                <div class="card-top ${handObj.c1.suit.class}">${handObj.c1.rank}</div>
+                <div class="card-center ${handObj.c1.suit.class}">${handObj.c1.suit.symbol}</div>
+                <div class="card-bottom ${handObj.c1.suit.class}">${handObj.c1.rank}</div>
+            </div>
+            <div class="poker-card">
+                <div class="card-top ${handObj.c2.suit.class}">${handObj.c2.rank}</div>
+                <div class="card-center ${handObj.c2.suit.class}">${handObj.c2.suit.symbol}</div>
+                <div class="card-bottom ${handObj.c2.suit.class}">${handObj.c2.rank}</div>
+            </div>
         `;
     }
 
-    // Khởi tạo chạy lần đầu
-    render();
+    function submitTrainAnswer(userChoice) {
+        trainTotal++;
+        const isCorrect = userChoice === currentQuiz.correctAction;
+        const fbBox = document.getElementById('feedbackBox');
+
+        if (isCorrect) {
+            trainScore++;
+            trainStreak++;
+            fbBox.className = 'feedback-box feedback-correct';
+            fbBox.innerHTML = `<b>🎉 CHÍNH XÁC!</b> Với bài <b>${currentQuiz.hand.handName}</b> ở ${currentQuiz.spot.name}, hành động chuẩn là <b>${currentQuiz.correctAction}</b>.<br><span style="font-size:0.85rem; color:#cbd5e1;">${currentQuiz.spot.tip}</span>`;
+        } else {
+            trainStreak = 0;
+            fbBox.className = 'feedback-box feedback-wrong';
+            fbBox.innerHTML = `<b>❌ CHƯA CHÍNH XÁC!</b> Với bài <b>${currentQuiz.hand.handName}</b> ở ${currentQuiz.spot.name}, bạn chọn <i>${userChoice}</i> nhưng chuẩn PokerCoaching là <b>${currentQuiz.correctAction}</b>.<br><span style="font-size:0.85rem; color:#cbd5e1;">${currentQuiz.spot.tip}</span>`;
+        }
+
+        // Cập nhật stats
+        document.getElementById('statScore').innerText = `${trainScore}/${trainTotal}`;
+        document.getElementById('statAccuracy').innerText = `${Math.round((trainScore / trainTotal) * 100)}%`;
+        document.getElementById('statStreak').innerText = trainStreak;
+
+        fbBox.style.display = 'block';
+        document.getElementById('trainerActions').style.display = 'none';
+        document.getElementById('btnNext').style.display = 'block';
+    }
+
+    // Khởi động ban đầu
+    renderSubButtons();
+    setCategory('RFI', document.getElementById('catGroup').children[0]);
 </script>
 
 </body>
